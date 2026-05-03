@@ -54,10 +54,7 @@ export default function HowItWorks() {
                   className="w-[48px] h-[48px] border border-hairline flex items-center justify-center"
                   style={{ borderRadius: "0px" }}
                 >
-                  <i
-                    data-lucide={step.icon}
-                    className="w-[20px] h-[20px] text-body"
-                  ></i>
+                  <step.icon className="w-[20px] h-[20px] text-body"></step.icon>
                 </div>
                 <span className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted">
                   {step.number}
