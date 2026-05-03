@@ -1,3 +1,5 @@
+import logo from "../assets/logo.png";
+
 export default function Hero({ onOpenModal }) {
   return (
     <section
@@ -28,11 +30,14 @@ export default function Hero({ onOpenModal }) {
           <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-primary mb-[16px]">
             From Complaint to Action
           </p>
-          <h1 className="font-inter text-[32px] sm:text-[56px] lg:text-[80px] font-500 leading-[1.05] tracking-[-1.6px] lg:tracking-[-1.6px] sm:tracking-[-1.12px] text-ink mb-[24px]">
-            SEE A PROBLEM.
-            <br />
-            TAKE ACTION.
-          </h1>
+          <div className="flex items-center gap-4">
+            <img src={logo} alt="logo.png" className="w-24" />
+            <h1 className="font-inter text-[32px] sm:text-[56px] lg:text-[80px] font-500 leading-[1.05] tracking-[-1.6px] lg:tracking-[-1.6px] sm:tracking-[-1.12px] text-ink mb-[24px]">
+              SEE A PROBLEM.
+              <br />
+              TAKE ACTION.
+            </h1>
+          </div>
           <p className="text-[14px] sm:text-[16px] font-400 leading-[1.5] text-body max-w-[560px] mb-[40px]">
             We see problems every day online. We react. We share. But nothing
             happens. ActionPoint Orbit is a website that turns online complaints

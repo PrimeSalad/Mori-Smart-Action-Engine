@@ -57,10 +57,7 @@ export default function Features() {
                 className="w-[48px] h-[48px] border border-hairline flex items-center justify-center mb-[24px]"
                 style={{ borderRadius: "0px" }}
               >
-                <i
-                  data-lucide={feature.icon}
-                  className="w-[20px] h-[20px] text-body"
-                ></i>
+                <feature.icon className="w-[20px] h-[20px] text-body"></feature.icon>
               </div>
               <h3 className="text-[18px] font-500 leading-[1.4] tracking-[0.08px] text-ink mb-[12px]">
                 {feature.title}
