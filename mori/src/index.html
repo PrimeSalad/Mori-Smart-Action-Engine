@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ActionPoint Orbit — Turn Complaints Into Action</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              canvas: "#181818",
+              "canvas-elevated": "#303030",
+              "canvas-light": "#ffffff",
+              primary: "#da291c",
+              "primary-active": "#b01e0a",
+              ink: "#ffffff",
+              body: "#969696",
+              muted: "#666666",
+              "muted-soft": "#8f8f8f",
+              hairline: "#303030",
+              "hairline-on-light": "#d2d2d2",
+              "surface-soft-light": "#f7f7f7",
+              "surface-strong-light": "#ebebeb",
+            },
+            fontFamily: {
+              inter: ["Inter", "-apple-system", "system-ui", "sans-serif"],
+            },
+            spacing: {
+              xxxs: "4px",
+              xxs: "8px",
+              xs: "16px",
+              sm: "24px",
+              md: "32px",
+              lg: "48px",
+              xl: "64px",
+              xxl: "96px",
+              super: "128px",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          system-ui,
+          sans-serif;
+        background: #181818;
+        color: #ffffff;
+      }
+      ::selection {
+        background: #da291c;
+        color: #fff;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #181818;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #303030;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #da291c;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect, useRef } = React;
+
+      /* ─────────── NAVIGATION ─────────── */
+      function Navigation() {
+        const [menuOpen, setMenuOpen] = useState(false);
+        const [scrolled, setScrolled] = useState(false);
+
+        useEffect(() => {
+          const onScroll = () => setScrolled(window.scrollY > 40);
+          window.addEventListener("scroll", onScroll);
+          return () => window.removeEventListener("scroll", onScroll);
+        }, []);
+
+        const navLinks = [
+          { label: "HOW IT WORKS", href: "#how-it-works" },
+          { label: "FEATURES", href: "#features" },
+          { label: "USE CASES", href: "#use-cases" },
+          { label: "CONTACT", href: "#contact" },
+        ];
+
+        return (
+          <nav
+            className={`fixed top-0 left-0 w-full z-50 transition-colors duration-300 ${
+              scrolled ? "bg-canvas/95 backdrop-blur-sm" : "bg-transparent"
+            }`}
+            style={{ height: "64px" }}
+          >
+            <div className="max-w-[1280px] mx-auto px-xs sm:px-md h-full flex items-center justify-between">
+              {/* Logo */}
+              <a href="#" className="flex items-center gap-[8px] group">
+                <div
+                  className="w-[28px] h-[28px] bg-primary flex items-center justify-center"
+                  style={{ borderRadius: "0px" }}
+                >
+                  <i
+                    data-lucide="shield"
+                    className="w-[16px] h-[16px] text-white"
+                    strokeWidth={2.5}
+                  ></i>
+                </div>
+                <span className="text-ink font-inter text-[15px] font-600 tracking-[0.65px] uppercase">
+                  ActionPoint
+                </span>
+              </a>
+
+              {/* Desktop nav */}
+              <div className="hidden md:flex items-center gap-[32px]">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className="text-[13px] font-600 uppercase tracking-[0.65px] text-body hover:text-ink transition-colors duration-200"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+                <a
+                  href="#hero"
+                  className="bg-primary text-white text-[13px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] h-[48px] flex items-center hover:bg-primary-active transition-colors duration-200"
+                  style={{ borderRadius: "0px" }}
+                >
+                  GET STARTED
+                </a>
+              </div>
+
+              {/* Hamburger */}
+              <button
+                className="md:hidden text-ink w-[48px] h-[48px] flex items-center justify-center"
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label="Toggle menu"
+              >
+                <i
+                  data-lucide={menuOpen ? "x" : "menu"}
+                  className="w-[24px] h-[24px]"
+                ></i>
+              </button>
+            </div>
+
+            {/* Mobile menu */}
+            {menuOpen && (
+              <div className="md:hidden bg-canvas border-t border-hairline px-xs py-sm">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-[12px] text-[13px] font-600 uppercase tracking-[0.65px] text-body hover:text-ink transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+                <a
+                  href="#hero"
+                  onClick={() => setMenuOpen(false)}
+                  className="block mt-[16px] bg-primary text-white text-[13px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] text-center hover:bg-primary-active transition-colors"
+                  style={{ borderRadius: "0px" }}
+                >
+                  GET STARTED
+                </a>
+              </div>
+            )}
+          </nav>
+        );
+      }
+
+      /* ─────────── HERO SECTION ─────────── */
+      function Hero() {
+        return (
+          <section
+            id="hero"
+            className="relative w-full min-h-screen flex items-end overflow-hidden"
+            style={{ background: "#181818" }}
+          >
+            {/* Background image */}
+            <div className="absolute inset-0">
+              <img
+                src="http://static.photos/cityscape/1200x630/77"
+                alt="Urban cityscape at night"
+                className="w-full h-full object-cover object-center"
+              />
+              {/* Dark overlay gradient */}
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(24,24,24,0.55) 0%, rgba(24,24,24,0.3) 40%, rgba(24,24,24,0.85) 75%, #181818 100%)",
+                }}
+              ></div>
+            </div>
+
+            {/* Content */}
+            <div className="relative z-10 w-full max-w-[1280px] mx-auto px-xs sm:px-md pb-[96px] pt-[160px]">
+              <div className="max-w-[820px]">
+                <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-primary mb-[16px]">
+                  From Complaint to Action
+                </p>
+                <h1 className="font-inter text-[32px] sm:text-[56px] lg:text-[80px] font-500 leading-[1.05] tracking-[-1.6px] lg:tracking-[-1.6px] sm:tracking-[-1.12px] text-ink mb-[24px]">
+                  SEE A PROBLEM.
+                  <br />
+                  TAKE ACTION.
+                </h1>
+                <p className="text-[14px] sm:text-[16px] font-400 leading-[1.5] text-body max-w-[560px] mb-[40px]">
+                  We see problems every day online. We react. We share. But
+                  nothing happens. ActionPoint Orbit is a website that turns
+                  online complaints into clear, structured reports — and sends
+                  them to the right agency.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-[16px]">
+                  <a
+                    href="#how-it-works"
+                    className="bg-primary text-white text-[14px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] h-[48px] flex items-center justify-center hover:bg-primary-active transition-colors duration-200"
+                    style={{ borderRadius: "0px" }}
+                  >
+                    GET STARTED
+                  </a>
+                  <a
+                    href="#features"
+                    className="bg-transparent text-ink text-[14px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] h-[48px] flex items-center justify-center border border-white/30 hover:border-white transition-colors duration-200"
+                    style={{ borderRadius: "0px" }}
+                  >
+                    LEARN MORE
+                  </a>
+                </div>
+              </div>
+
+              {/* Stats band */}
+              <div className="mt-[64px] flex flex-wrap gap-[48px]">
+                <div>
+                  <p className="text-[40px] sm:text-[80px] font-700 leading-[1.0] tracking-[-1.6px] text-primary">
+                    1
+                  </p>
+                  <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mt-[8px]">
+                    Click to Report
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[40px] sm:text-[80px] font-700 leading-[1.0] tracking-[-1.6px] text-ink">
+                    50+
+                  </p>
+                  <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mt-[8px]">
+                    Agencies Connected
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[40px] sm:text-[80px] font-700 leading-[1.0] tracking-[-1.6px] text-ink">
+                    &lt;5s
+                  </p>
+                  <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mt-[8px]">
+                    Report Generated
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      /* ─────────── HOW IT WORKS ─────────── */
+      function HowItWorks() {
+        const steps = [
+          {
+            icon: "mouse-pointer-click",
+            number: "01",
+            title: "Spot a Problem Online",
+            description:
+              "You see a complaint on social media — an overcharged fare, a fire, a dark street. One click activates FixFinder.",
+          },
+          {
+            icon: "brain",
+            number: "02",
+            title: "FixFinder Identifies the Issue",
+            description:
+              "The AI reads the post and classifies it — transport violation, emergency, infrastructure concern, and more.",
+          },
+          {
+            icon: "building",
+            number: "03",
+            title: "Finds the Responsible Agency",
+            description:
+              "FixFinder maps the issue to the right office — LTFRB for fares, Bureau of Fire for emergencies, local government for roads.",
+          },
+          {
+            icon: "file-text",
+            number: "04",
+            title: "Auto-Generates a Report",
+            description:
+              "Not a rant. A clear, formal, actionable report — plus exactly where to send it. Real action in seconds.",
+          },
+        ];
+
+        return (
+          <section id="how-it-works" className="bg-canvas py-[96px]">
+            <div className="max-w-[1280px] mx-auto px-xs sm:px-md">
+              <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-primary mb-[16px]">
+                Process
+              </p>
+              <h2 className="text-[26px] sm:text-[36px] font-500 leading-[1.2] tracking-[-0.36px] text-ink mb-[64px]">
+                How FixFinder Works
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[8px]">
+                {steps.map((step) => (
+                  <div
+                    key={step.number}
+                    className="bg-canvas-elevated p-[32px] flex flex-col"
+                    style={{ borderRadius: "0px" }}
+                  >
+                    <div className="flex items-center justify-between mb-[24px]">
+                      <div
+                        className="w-[48px] h-[48px] border border-hairline flex items-center justify-center"
+                        style={{ borderRadius: "0px" }}
+                      >
+                        <i
+                          data-lucide={step.icon}
+                          className="w-[20px] h-[20px] text-body"
+                        ></i>
+                      </div>
+                      <span className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted">
+                        {step.number}
+                      </span>
+                    </div>
+                    <h3 className="text-[18px] font-500 leading-[1.4] tracking-[0.08px] text-ink mb-[12px]">
+                      {step.title}
+                    </h3>
+                    <p className="text-[14px] font-400 leading-[1.5] text-body">
+                      {step.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      /* ─────────── FEATURES ─────────── */
+      function Features() {
+        const features = [
+          {
+            icon: "globe",
+            title: "Web Platform",
+            description:
+              "No downloads, no installs. Open the site, paste a problem, and FixFinder does the rest — right in your browser.",
+          },
+          {
+            icon: "cpu",
+            title: "AI Issue Detection",
+            description:
+              "FixFinder reads the post, identifies the type of issue, and understands the context — no manual input needed.",
+          },
+          {
+            icon: "file-text",
+            title: "Auto-Generated Reports",
+            description:
+              "Transforms vague complaints into formal, actionable reports. Clear language. Structured details. Ready to send.",
+          },
+          {
+            icon: "route",
+            title: "Direct Agency Routing",
+            description:
+              "Not just categorized — directed. FixFinder tells you exactly which office handles the issue and how to reach them.",
+          },
+        ];
+
+        return (
+          <section id="features" className="bg-canvas py-[96px]">
+            <div className="max-w-[1280px] mx-auto px-xs sm:px-md">
+              <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-[64px]">
+                <div>
+                  <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-primary mb-[16px]">
+                    Capabilities
+                  </p>
+                  <h2 className="text-[26px] sm:text-[36px] font-500 leading-[1.2] tracking-[-0.36px] text-ink">
+                    The Problem Is Action
+                  </h2>
+                </div>
+                <p className="text-[14px] font-400 leading-[1.5] text-body max-w-[420px] mt-[16px] lg:mt-0">
+                  Most complaints never reach the right people. They're unclear,
+                  unstructured, or sent to the wrong place. FixFinder changes
+                  that.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-[8px]">
+                {features.map((feature) => (
+                  <div
+                    key={feature.title}
+                    className="bg-canvas-elevated p-[32px] flex flex-col"
+                    style={{ borderRadius: "0px" }}
+                  >
+                    <div
+                      className="w-[48px] h-[48px] border border-hairline flex items-center justify-center mb-[24px]"
+                      style={{ borderRadius: "0px" }}
+                    >
+                      <i
+                        data-lucide={feature.icon}
+                        className="w-[20px] h-[20px] text-body"
+                      ></i>
+                    </div>
+                    <h3 className="text-[18px] font-500 leading-[1.4] tracking-[0.08px] text-ink mb-[12px]">
+                      {feature.title}
+                    </h3>
+                    <p className="text-[14px] font-400 leading-[1.5] text-body">
+                      {feature.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      /* ─────────── USE CASES ─────────── */
+      function UseCases() {
+        const cases = [
+          {
+            image: "http://static.photos/automotive/640x360/7",
+            tag: "TRANSPORT",
+            title: "Overcharged Fare",
+            description:
+              '"Siningil ako ng driver ng sobra." FixFinder classifies it as a fare violation and routes it to LTFRB — with a formal report ready to send.',
+          },
+          {
+            image: "http://static.photos/nature/640x360/55",
+            tag: "EMERGENCY",
+            title: "Fire Emergency",
+            description:
+              '"May sunog sa kabilang barangay, walang tulong." FixFinder detects an emergency and immediately shows Bureau of Fire contacts and hotlines.',
+          },
+          {
+            image: "http://static.photos/cityscape/640x360/22",
+            tag: "INFRASTRUCTURE",
+            title: "Dark Streets",
+            description:
+              '"Ang dilim ng street namin." FixFinder identifies it as an infrastructure concern and directs it to the local government unit responsible.',
+          },
+          {
+            image: "http://static.photos/industry/640x360/33",
+            tag: "ENVIRONMENT",
+            title: "Illegal Dumping",
+            description:
+              "Waste and hazardous materials spotted in public areas — FixFinder structures the report and sends it to environmental services.",
+          },
+        ];
+
+        return (
+          <section id="use-cases" className="bg-canvas py-[96px]">
+            <div className="max-w-[1280px] mx-auto px-xs sm:px-md">
+              <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-primary mb-[16px]">
+                Scenarios
+              </p>
+              <h2 className="text-[26px] sm:text-[36px] font-500 leading-[1.2] tracking-[-0.36px] text-ink mb-[64px]">
+                Real Complaints. Real Action.
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[8px]">
+                {cases.map((c) => (
+                  <div
+                    key={c.title}
+                    className="bg-canvas flex flex-col"
+                    style={{ borderRadius: "0px" }}
+                  >
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <img
+                        src={c.image}
+                        alt={c.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-canvas/80 to-transparent"></div>
+                      <span
+                        className="absolute top-[16px] left-[16px] bg-canvas-elevated text-[11px] font-600 uppercase tracking-[1.1px] text-ink px-[12px] py-[4px]"
+                        style={{ borderRadius: "9999px" }}
+                      >
+                        {c.tag}
+                      </span>
+                    </div>
+                    <div className="p-[24px]">
+                      <h3 className="text-[16px] font-500 leading-[1.4] tracking-[0.08px] text-ink mb-[8px]">
+                        {c.title}
+                      </h3>
+                      <p className="text-[14px] font-400 leading-[1.5] text-body">
+                        {c.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      /* ─────────── CTA BAND ─────────── */
+      function CTABand() {
+        return (
+          <section
+            className="relative w-full overflow-hidden"
+            style={{
+              background: "linear-gradient(180deg, #3c3c3c, #030303 64%)",
+            }}
+          >
+            <div className="absolute inset-0">
+              <img
+                src="http://static.photos/cityscape/1200x630/42"
+                alt=""
+                className="w-full h-full object-cover opacity-20"
+              />
+            </div>
+            <div className="relative z-10 max-w-[1280px] mx-auto px-xs sm:px-md py-[96px] text-center">
+              <h2 className="text-[32px] sm:text-[56px] lg:text-[80px] font-500 leading-[1.05] tracking-[-1.6px] text-ink mb-[32px]">
+                WHEN A PROBLEM
+                <br />
+                HAS <span className="text-primary">DIRECTION</span>—
+                <br />
+                IT GETS SOLVED.
+              </h2>
+              <p className="text-[14px] font-400 leading-[1.5] text-body max-w-[480px] mx-auto mb-[40px]">
+                A complaint without direction goes nowhere. ActionPoint Orbit
+                gives every problem a path to the right office.
+              </p>
+              <a
+                href="#hero"
+                className="inline-block bg-primary text-white text-[14px] font-700 uppercase tracking-[1.4px] px-[48px] py-[14px] h-[48px] flex items-center justify-center mx-auto hover:bg-primary-active transition-colors duration-200"
+                style={{ borderRadius: "0px" }}
+              >
+                GET STARTED
+              </a>
+            </div>
+          </section>
+        );
+      }
+
+      /* ─────────── FOOTER ─────────── */
+      function Footer() {
+        const linkGroups = [
+          {
+            title: "PRODUCT",
+            links: [
+              "FixFinder AI",
+              "Web Platform",
+              "Agency Directory",
+              "Report Builder",
+            ],
+          },
+          {
+            title: "COMPANY",
+            links: ["About", "Careers", "Blog", "Press"],
+          },
+          {
+            title: "RESOURCES",
+            links: ["Documentation", "Agency Index", "FAQ", "Community"],
+          },
+          {
+            title: "LEGAL",
+            links: ["Privacy", "Terms", "Data Policy", "Compliance"],
+          },
+          {
+            title: "CONNECT",
+            links: ["Twitter", "LinkedIn", "GitHub", "Contact"],
+          },
+        ];
+
+        return (
+          <footer id="contact" className="bg-canvas border-t border-hairline">
+            <div className="max-w-[1280px] mx-auto px-xs sm:px-md py-[64px]">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-[32px] mb-[64px]">
+                {linkGroups.map((group) => (
+                  <div key={group.title}>
+                    <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mb-[16px]">
+                      {group.title}
+                    </p>
+                    <ul className="space-y-[8px]">
+                      {group.links.map((link) => (
+                        <li key={link}>
+                          <a
+                            href="#"
+                            className="text-[13px] font-400 leading-[1.5] text-body hover:text-ink transition-colors duration-200"
+                          >
+                            {link}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-t border-hairline pt-[32px] flex flex-col sm:flex-row items-center justify-between gap-[16px]">
+                <div className="flex items-center gap-[8px]">
+                  <div
+                    className="w-[24px] h-[24px] bg-primary flex items-center justify-center"
+                    style={{ borderRadius: "0px" }}
+                  >
+                    <i
+                      data-lucide="shield"
+                      className="w-[12px] h-[12px] text-white"
+                      strokeWidth={2.5}
+                    ></i>
+                  </div>
+                  <span className="text-[13px] font-600 uppercase tracking-[0.65px] text-muted">
+                    ActionPoint Orbit
+                  </span>
+                </div>
+                <p className="text-[13px] font-400 text-muted">
+                  © 2025 ActionPoint Orbit. All rights reserved.
+                </p>
+              </div>
+            </div>
+          </footer>
+        );
+      }
+
+      /* ─────────── APP ─────────── */
+      function App() {
+        const ref = useRef(null);
+
+        useEffect(() => {
+          if (window.lucide) {
+            window.lucide.createIcons();
+          }
+        }, []);
+
+        // Re-render lucide icons on any state change (for dynamic content)
+        useEffect(() => {
+          const timer = setTimeout(() => {
+            if (window.lucide) {
+              window.lucide.createIcons();
+            }
+          }, 100);
+          return () => clearTimeout(timer);
+        });
+
+        return (
+          <div ref={ref} className="font-inter bg-canvas min-h-screen">
+            <Navigation />
+            <Hero />
+            <HowItWorks />
+            <Features />
+            <UseCases />
+            <CTABand />
+            <Footer />
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
