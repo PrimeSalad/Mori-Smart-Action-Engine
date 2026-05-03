@@ -1,4 +1,5 @@
 import { Shield } from "lucide-react";
+import logo from "../assets/logo.png";
 
 export default function Footer() {
   const linkGroups = [
@@ -64,6 +65,7 @@ export default function Footer() {
                 className="w-[12px] h-[12px] text-white"
                 strokeWidth={2.5}
               />
+              <img src={logo} alt="logo.png" />
             </div>
             <span className="text-[13px] font-600 uppercase tracking-[0.65px] text-muted">
               ActionPoint Orbit

@@ -1,5 +1,6 @@
 import { Shield, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import logo from "../assets/logo.png";
 
 export default function Navigation({ onOpenModal }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,10 +33,7 @@ export default function Navigation({ onOpenModal }) {
             className="w-[28px] h-[28px] bg-primary flex items-center justify-center"
             style={{ borderRadius: "0px" }}
           >
-            <Shield
-              className="w-[16px] h-[16px] text-white"
-              strokeWidth={2.5}
-            />
+            <img src={logo} alt="logo.png" />
           </div>
           <span className="text-ink font-inter text-[15px] font-600 tracking-[0.65px] uppercase">
             ActionPoint
