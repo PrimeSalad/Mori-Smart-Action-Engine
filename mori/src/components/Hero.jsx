@@ -1,4 +1,4 @@
-export default function Hero() {
+export default function Hero({ onOpenModal }) {
   return (
     <section
       id="hero"
@@ -40,13 +40,13 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-[16px]">
-            <a
-              href="#how-it-works"
+            <button
+              onClick={onOpenModal}
               className="bg-primary text-white text-[14px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] h-[48px] flex items-center justify-center hover:bg-primary-active transition-colors duration-200"
               style={{ borderRadius: "0px" }}
             >
               GET STARTED
-            </a>
+            </button>
             <a
               href="#features"
               className="bg-transparent text-ink text-[14px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] h-[48px] flex items-center justify-center border border-white/30 hover:border-white transition-colors duration-200"
