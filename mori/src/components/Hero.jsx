@@ -2,7 +2,7 @@ export default function Hero({ onOpenModal }) {
   return (
     <section
       id="hero"
-      className="relative w-full min-h-screen flex items-end overflow-hidden"
+      className="relative w-full min-h-screen flex items-center overflow-hidden"
       style={{ background: "#181818" }}
     >
       {/* Background image */}
@@ -54,34 +54,6 @@ export default function Hero({ onOpenModal }) {
             >
               LEARN MORE
             </a>
-          </div>
-        </div>
-
-        {/* Stats band */}
-        <div className="mt-[64px] flex flex-wrap gap-[48px]">
-          <div>
-            <p className="text-[40px] sm:text-[80px] font-700 leading-[1.0] tracking-[-1.6px] text-primary">
-              1
-            </p>
-            <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mt-[8px]">
-              Click to Report
-            </p>
-          </div>
-          <div>
-            <p className="text-[40px] sm:text-[80px] font-700 leading-[1.0] tracking-[-1.6px] text-ink">
-              50+
-            </p>
-            <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mt-[8px]">
-              Agencies Connected
-            </p>
-          </div>
-          <div>
-            <p className="text-[40px] sm:text-[80px] font-700 leading-[1.0] tracking-[-1.6px] text-ink">
-              &lt;5s
-            </p>
-            <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mt-[8px]">
-              Report Generated
-            </p>
           </div>
         </div>
       </div>
