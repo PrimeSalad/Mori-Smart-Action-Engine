@@ -1,4 +1,4 @@
-export default function CTABand() {
+export default function CTABand({ onOpenModal }) {
   return (
     <section
       className="relative w-full overflow-hidden"
@@ -25,13 +25,13 @@ export default function CTABand() {
           A complaint without direction goes nowhere. ActionPoint Orbit gives
           every problem a path to the right office.
         </p>
-        <a
-          href="#hero"
-          className="inline-block bg-primary text-white text-[14px] font-700 uppercase tracking-[1.4px] px-[48px] py-[14px] h-[48px] flex items-center justify-center mx-auto hover:bg-primary-active transition-colors duration-200"
+        <button
+          onClick={onOpenModal}
+          className="bg-primary text-white text-[14px] font-700 uppercase tracking-[1.4px] px-[48px] py-[14px] h-[48px] flex items-center justify-center mx-auto hover:bg-primary-active transition-colors duration-200"
           style={{ borderRadius: "0px" }}
         >
           GET STARTED
-        </a>
+        </button>
       </div>
     </section>
   );

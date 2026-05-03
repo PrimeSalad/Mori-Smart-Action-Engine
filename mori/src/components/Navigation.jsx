@@ -1,7 +1,7 @@
 import { Shield, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
-export default function Navigation() {
+export default function Navigation({ onOpenModal }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -53,13 +53,13 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          <a
-            href="#hero"
+          <button
+            onClick={onOpenModal}
             className="bg-primary text-white text-[13px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] h-[48px] flex items-center hover:bg-primary-active transition-colors duration-200"
             style={{ borderRadius: "0px" }}
           >
             GET STARTED
-          </a>
+          </button>
         </div>
 
         {/* Hamburger */}
@@ -89,14 +89,17 @@ export default function Navigation() {
               {link.label}
             </a>
           ))}
-          <a
-            href="#hero"
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              onOpenModal();
+            }}
             onClick={() => setMenuOpen(false)}
             className="block mt-[16px] bg-primary text-white text-[13px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] text-center hover:bg-primary-active transition-colors"
             style={{ borderRadius: "0px" }}
           >
             GET STARTED
-          </a>
+          </button>
         </div>
       )}
     </nav>
