@@ -1,19 +1,119 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
+  AlertCircle,
+  ArrowLeft,
+  AtSign,
+  Bell,
+  Brain,
   Check,
   CheckCircle,
   FileImage,
+  Hash,
   Image,
   Info,
+  Mail,
+  MailCheck,
   Mic,
+  Pencil,
   Play,
+  RotateCcw,
+  Send,
+  Tag,
   Trash2,
   Type,
   Upload,
   X,
 } from "lucide-react";
 
+const AGENCIES = [
+  {
+    id: "ltfrb",
+    name: "LTFRB",
+    fullName: "Land Transportation Franchising and Regulatory Board",
+    email: "contact@ltfrb.gov.ph",
+    categories: ["transport", "fare", "franchise"],
+  },
+  {
+    id: "bfp",
+    name: "BFP",
+    fullName: "Bureau of Fire Protection",
+    email: "info@bfp.gov.ph",
+    categories: ["fire", "emergency", "safety"],
+  },
+  {
+    id: "dpwh",
+    name: "DPWH",
+    fullName: "Department of Public Works and Highways",
+    email: "comms@dpwh.gov.ph",
+    categories: ["infrastructure", "roads", "bridges"],
+  },
+  {
+    id: "denr",
+    name: "DENR",
+    fullName: "Department of Environment and Natural Resources",
+    email: "contact@denr.gov.ph",
+    categories: ["environment", "pollution", "dumping"],
+  },
+  {
+    id: "dilg",
+    name: "DILG",
+    fullName: "Department of the Interior and Local Government",
+    email: "info@dilg.gov.ph",
+    categories: ["governance", "local", "barangay"],
+  },
+  {
+    id: "doh",
+    name: "DOH",
+    fullName: "Department of Health",
+    email: "contact@doh.gov.ph",
+    categories: ["health", "sanitation", "water"],
+  },
+  {
+    id: "pnp",
+    name: "PNP",
+    fullName: "Philippine National Police",
+    email: "pnp@pnp.gov.ph",
+    categories: ["crime", "security", "safety"],
+  },
+  {
+    id: "mmda",
+    name: "MMDA",
+    fullName: "Metropolitan Manila Development Authority",
+    email: "info@mmda.gov.ph",
+    categories: ["traffic", "transport", "road"],
+  },
+  {
+    id: "nbi",
+    name: "NBI",
+    fullName: "National Bureau of Investigation",
+    email: "nbi@nbi.gov.ph",
+    categories: ["crime", "investigation", "fraud"],
+  },
+  {
+    id: "bir",
+    name: "BIR",
+    fullName: "Bureau of Internal Revenue",
+    email: "contact@bir.gov.ph",
+    categories: ["tax", "fraud", "financial"],
+  },
+  {
+    id: "dole",
+    name: "DOLE",
+    fullName: "Department of Labor and Employment",
+    email: "info@dole.gov.ph",
+    categories: ["labor", "employment", "workplace"],
+  },
+  {
+    id: "dswd",
+    name: "DSWD",
+    fullName: "Department of Social Welfare and Development",
+    email: "info@dswd.gov.ph",
+    categories: ["social", "welfare", "community"],
+  },
+];
+
 export default function ReportModal({ isOpen, onClose }) {
+  const [step, setStep] = useState("input");
   const [activeTab, setActiveTab] = useState("text");
   const [textInput, setTextInput] = useState("");
   const [isRecording, setIsRecording] = useState(false);
@@ -23,15 +123,21 @@ export default function ReportModal({ isOpen, onClose }) {
   const [imagePreview, setImagePreview] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [generatedReport, setGeneratedReport] = useState(null);
+  const [editableReport, setEditableReport] = useState("");
+  const [selectedAgencies, setSelectedAgencies] = useState([]);
+  const [emailInput, setEmailInput] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [emailShake, setEmailShake] = useState(false);
   const fileInputRef = useRef(null);
   const recordingTimerRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-
+  const emailInputRef = useRef(null);
   // Reset state on open
   useEffect(() => {
     if (isOpen) {
+      setStep("input");
       setActiveTab("text");
       setTextInput("");
       setIsRecording(false);
@@ -41,10 +147,14 @@ export default function ReportModal({ isOpen, onClose }) {
       setImagePreview(null);
       setIsDragging(false);
       setIsSubmitting(false);
-      setSubmitted(false);
+      setGeneratedReport(null);
+      setEditableReport("");
+      setSelectedAgencies([]);
+      setEmailInput("");
+      setEmailError("");
+      setEmailShake(false);
     }
   }, [isOpen]);
-
   // Close on Escape
   useEffect(() => {
     const handleKey = (e) => {
@@ -53,7 +163,6 @@ export default function ReportModal({ isOpen, onClose }) {
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [isOpen, onClose]);
-
   const startRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -61,11 +170,9 @@ export default function ReportModal({ isOpen, onClose }) {
       });
       mediaRecorderRef.current = new MediaRecorder(stream);
       audioChunksRef.current = [];
-
       mediaRecorderRef.current.ondataavailable = (e) => {
         if (e.data.size > 0) audioChunksRef.current.push(e.data);
       };
-
       mediaRecorderRef.current.onstop = () => {
         const blob = new Blob(audioChunksRef.current, {
           type: "audio/webm",
@@ -74,7 +181,6 @@ export default function ReportModal({ isOpen, onClose }) {
         setAudioResult({ url, duration: recordingTime });
         stream.getTracks().forEach((t) => t.stop());
       };
-
       mediaRecorderRef.current.start();
       setIsRecording(true);
       setRecordingTime(0);
@@ -88,7 +194,6 @@ export default function ReportModal({ isOpen, onClose }) {
       );
     }
   };
-
   const stopRecording = () => {
     if (
       mediaRecorderRef.current &&
@@ -99,13 +204,11 @@ export default function ReportModal({ isOpen, onClose }) {
     setIsRecording(false);
     clearInterval(recordingTimerRef.current);
   };
-
   const cancelRecording = () => {
     stopRecording();
     setRecordingTime(0);
     setAudioResult(null);
   };
-
   const handleFileSelect = (file) => {
     if (!file) return;
     if (!file.type.startsWith("image/")) {
@@ -117,24 +220,19 @@ export default function ReportModal({ isOpen, onClose }) {
     reader.onload = (e) => setImagePreview(e.target.result);
     reader.readAsDataURL(file);
   };
-
   const handleDragOver = (e) => {
     e.preventDefault();
     setIsDragging(true);
   };
-
   const handleDragLeave = (e) => {
     e.preventDefault();
     setIsDragging(false);
   };
-
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-    const file = e.dataTransfer.files[0];
-    handleFileSelect(file);
+    handleFileSelect(e.dataTransfer.files[0]);
   };
-
   const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60)
       .toString()
@@ -142,25 +240,77 @@ export default function ReportModal({ isOpen, onClose }) {
     const s = (seconds % 60).toString().padStart(2, "0");
     return `${m}:${s}`;
   };
-
-  const handleSubmit = () => {
+  const validateEmail = (email) => {
+    if (!email.trim()) return true; // optional
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+  const hasContent = textInput.trim() || audioResult || uploadedImage;
+  const handleGenerateReport = () => {
+    setStep("generating");
+    setTimeout(() => {
+      const result = generateReportContent(
+        textInput,
+        audioResult,
+        uploadedImage,
+      );
+      setGeneratedReport(result);
+      setEditableReport(result.report);
+      setSelectedAgencies(result.relevantAgencies.map((a) => a.id));
+      setStep("review");
+    }, 2800);
+  };
+  const toggleAgency = (id) => {
+    setSelectedAgencies((prev) =>
+      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id],
+    );
+  };
+  const handleSubmitReport = () => {
+    // Validate email if provided
+    if (emailInput.trim() && !validateEmail(emailInput)) {
+      setEmailError("Please enter a valid email address");
+      setEmailShake(true);
+      setTimeout(() => setEmailShake(false), 500);
+      if (emailInputRef.current) emailInputRef.current.focus();
+      return;
+    }
+    setEmailError("");
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      setSubmitted(true);
+      setStep("submitted");
     }, 1500);
   };
-
-  const hasContent = textInput.trim() || audioResult || uploadedImage;
-
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "Critical":
+        return "text-primary";
+      case "High":
+        return "text-yellow-500";
+      case "Medium":
+        return "text-blue-400";
+      default:
+        return "text-body";
+    }
+  };
+  const getPriorityBg = (priority) => {
+    switch (priority) {
+      case "Critical":
+        return "bg-primary/10 border-primary/30";
+      case "High":
+        return "bg-yellow-500/10 border-yellow-500/30";
+      case "Medium":
+        return "bg-blue-400/10 border-blue-400/30";
+      default:
+        return "bg-canvas-elevated border-hairline";
+    }
+  };
   if (!isOpen) return null;
-
   const tabs = [
     { id: "text", icon: Type, label: "TYPE" },
     { id: "record", icon: Mic, label: "RECORD" },
     { id: "image", icon: Image, label: "UPLOAD" },
   ];
-
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-xs">
       {/* Overlay */}
@@ -168,31 +318,44 @@ export default function ReportModal({ isOpen, onClose }) {
         className="absolute inset-0 bg-black/70 backdrop-blur-sm overlay-enter"
         onClick={onClose}
       ></div>
-
       {/* Modal */}
       <div
-        className="relative w-full max-w-[560px] bg-canvas border border-hairline modal-enter max-h-[90vh] flex flex-col"
+        className="relative w-full max-w-[640px] bg-canvas border border-hairline modal-enter max-h-[90vh] flex flex-col"
         style={{ borderRadius: "0px" }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-xs sm:px-md py-[20px] border-b border-hairline flex-shrink-0">
           <div>
             <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-primary">
-              New Report
+              {step === "input"
+                ? "New Report"
+                : step === "generating"
+                  ? "Generating Report"
+                  : step === "review"
+                    ? "Review & Send"
+                    : "Report Submitted"}
             </p>
             <h2 className="text-[18px] font-500 leading-[1.4] text-ink mt-[4px]">
-              Report a Problem
+              {step === "input"
+                ? "Report a Problem"
+                : step === "generating"
+                  ? "FixFinder is Working..."
+                  : step === "review"
+                    ? "Review Your Report"
+                    : "Report Sent!"}
             </h2>
           </div>
-          <button
-            onClick={onClose}
-            className="w-[40px] h-[40px] flex items-center justify-center text-body hover:text-ink transition-colors cursor-pointer"
-          >
-            <X className="w-[20px] h-[20px]" />
-          </button>
+          {step !== "generating" && (
+            <button
+              onClick={onClose}
+              className="w-[40px] h-[40px] flex items-center justify-center text-body hover:text-ink transition-colors cursor-pointer"
+            >
+              <X className="w-[20px] h-[20px]"></X>
+            </button>
+          )}
         </div>
-
-        {!submitted && (
+        {/* ─── STEP: INPUT ─── */}
+        {step === "input" && (
           <>
             {/* Tabs */}
             <div className="flex border-b border-hairline flex-shrink-0">
@@ -211,7 +374,6 @@ export default function ReportModal({ isOpen, onClose }) {
                 </button>
               ))}
             </div>
-
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-xs sm:px-md sm:py-md">
               {/* TEXT TAB */}
@@ -231,15 +393,15 @@ export default function ReportModal({ isOpen, onClose }) {
                     />
                   </div>
                   <div className="flex items-start gap-[8px]">
-                    <Info className="w-[14px] h-[14px] text-muted mt-[2px] flex-shrink-0" />
+                    <Info className="w-[14px] h-[14px] text-muted mt-[2px] flex-shrink-0"></Info>
                     <p className="text-[12px] font-400 leading-[1.5] text-muted">
                       FixFinder will analyze your text, identify the issue type,
-                      and route it to the correct agency automatically.
+                      and generate a formal report you can review and send to
+                      the correct agency.
                     </p>
                   </div>
                 </div>
               )}
-
               {/* RECORD TAB */}
               {activeTab === "record" && (
                 <div className="flex flex-col items-center gap-[24px] py-[24px]">
@@ -250,7 +412,7 @@ export default function ReportModal({ isOpen, onClose }) {
                         style={{ borderRadius: "50%" }}
                         onClick={startRecording}
                       >
-                        <Mic className="w-[32px] h-[32px] text-body" />
+                        <Mic className="w-[32px] h-[32px] text-body"></Mic>
                       </div>
                       <div className="text-center">
                         <p className="text-[14px] font-500 text-ink mb-[4px]">
@@ -263,7 +425,6 @@ export default function ReportModal({ isOpen, onClose }) {
                       </div>
                     </>
                   )}
-
                   {isRecording && (
                     <>
                       <div className="relative w-[80px] h-[80px] flex items-center justify-center record-pulse">
@@ -286,7 +447,6 @@ export default function ReportModal({ isOpen, onClose }) {
                           {formatTime(recordingTime)}
                         </p>
                       </div>
-                      {/* Waveform visualization */}
                       <div className="flex items-center gap-[3px] h-[32px]">
                         {Array.from({ length: 20 }).map((_, i) => (
                           <div
@@ -308,7 +468,6 @@ export default function ReportModal({ isOpen, onClose }) {
                       </button>
                     </>
                   )}
-
                   {audioResult && !isRecording && (
                     <>
                       <div
@@ -319,7 +478,7 @@ export default function ReportModal({ isOpen, onClose }) {
                           className="w-[40px] h-[40px] bg-primary flex items-center justify-center flex-shrink-0"
                           style={{ borderRadius: "50%" }}
                         >
-                          <Play className="w-[16px] h-[16px] text-white -ml-[2px]" />
+                          <Play className="w-[16px] h-[16px] text-white ml-[2px]"></Play>
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-[13px] font-500 text-ink">
@@ -336,22 +495,20 @@ export default function ReportModal({ isOpen, onClose }) {
                           }}
                           className="text-body hover:text-primary transition-colors cursor-pointer"
                         >
-                          <Trash2 className="w-[16px] h-[16px]" />
+                          <Trash2 className="w-[16px] h-[16px]"></Trash2>
                         </button>
                       </div>
                       <div className="w-full flex items-start gap-[8px]">
-                        <CheckCircle className="w-[14px] h-[14px] text-primary mt-[2px] flex-shrink-0" />
+                        <CheckCircle className="w-[14px] h-[14px] text-primary mt-[2px] flex-shrink-0"></CheckCircle>
                         <p className="text-[12px] font-400 leading-[1.5] text-muted">
                           Recording saved. FixFinder will transcribe and analyze
-                          your voice report to identify the issue and route it
-                          properly.
+                          your voice report to generate a formal report.
                         </p>
                       </div>
                     </>
                   )}
                 </div>
               )}
-
               {/* IMAGE TAB */}
               {activeTab === "image" && (
                 <div className="flex flex-col gap-[16px]">
@@ -372,7 +529,7 @@ export default function ReportModal({ isOpen, onClose }) {
                         className="w-[56px] h-[56px] border border-hairline flex items-center justify-center"
                         style={{ borderRadius: "50%" }}
                       >
-                        <Upload className="w-[24px] h-[24px] text-body" />
+                        <Upload className="w-[24px] h-[24px] text-body"></Upload>
                       </div>
                       <div className="text-center">
                         <p className="text-[14px] font-500 text-ink mb-[4px]">
@@ -424,7 +581,7 @@ export default function ReportModal({ isOpen, onClose }) {
                           className="absolute top-[8px] right-[8px] w-[32px] h-[32px] bg-canvas/90 border border-hairline flex items-center justify-center text-body hover:text-primary cursor-pointer transition-colors"
                           style={{ borderRadius: "0px" }}
                         >
-                          <X className="w-[14px] h-[14px]" />
+                          <X className="w-[14px] h-[14px]"></X>
                         </button>
                       </div>
                       <div
@@ -432,7 +589,7 @@ export default function ReportModal({ isOpen, onClose }) {
                         style={{ borderRadius: "0px" }}
                       >
                         <div className="flex items-center gap-[8px] mb-[8px]">
-                          <FileImage className="w-[14px] h-[14px] text-primary" />
+                          <FileImage className="w-[14px] h-[14px] text-primary"></FileImage>
                           <p className="text-[13px] font-500 text-ink truncate">
                             {uploadedImage?.name || "Image uploaded"}
                           </p>
@@ -453,17 +610,15 @@ export default function ReportModal({ isOpen, onClose }) {
                     </div>
                   )}
                   <div className="flex items-start gap-[8px]">
-                    <Info className="w-[14px] h-[14px] text-muted mt-[2px] flex-shrink-0" />
+                    <Info className="w-[14px] h-[14px] text-muted mt-[2px] flex-shrink-0"></Info>
                     <p className="text-[12px] font-400 leading-[1.5] text-muted">
                       FixFinder will analyze your image using AI vision to
-                      detect the type of problem and match it with the right
-                      agency.
+                      detect the type of problem and generate a formal report.
                     </p>
                   </div>
                 </div>
               )}
             </div>
-
             {/* Footer */}
             <div className="border-t border-hairline px-xs sm:px-md py-[16px] flex items-center justify-between flex-shrink-0">
               <div className="flex items-center gap-[8px]">
@@ -487,37 +642,345 @@ export default function ReportModal({ isOpen, onClose }) {
                   Cancel
                 </button>
                 <button
-                  onClick={handleSubmit}
-                  disabled={!hasContent || isSubmitting}
+                  onClick={handleGenerateReport}
+                  disabled={!hasContent}
                   className={`text-[13px] font-700 uppercase tracking-[1.4px] px-[32px] py-[12px] transition-colors cursor-pointer ${
-                    hasContent && !isSubmitting
+                    hasContent
                       ? "bg-primary text-white hover:bg-primary-active"
                       : "bg-hairline text-muted cursor-not-allowed"
                   }`}
                   style={{ borderRadius: "0px" }}
                 >
-                  {isSubmitting ? "ANALYZING..." : "SUBMIT REPORT"}
+                  GENERATE REPORT
                 </button>
               </div>
             </div>
           </>
         )}
-
-        {/* Submitted state */}
-        {submitted && (
+        {/* ─── STEP: GENERATING ─── */}
+        {step === "generating" && (
+          <div className="flex-1 flex flex-col items-center justify-center py-[64px] px-[24px]">
+            {/* Spinning loader */}
+            <div className="relative mb-[32px]">
+              <div
+                className="w-[64px] h-[64px] border-[3px] border-hairline border-t-primary spinner"
+                style={{ borderRadius: "50%" }}
+              ></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Brain className="w-[24px] h-[24px] text-primary"></Brain>
+              </div>
+            </div>
+            <h3 className="text-[18px] font-500 text-ink mb-[8px] text-center">
+              Analyzing Your Report
+            </h3>
+            <p className="text-[14px] font-400 leading-[1.5] text-body max-w-[360px] text-center mb-[24px]">
+              FixFinder is classifying the issue, identifying the category, and
+              preparing a formal report.
+            </p>
+            {/* Progress bar */}
+            <div
+              className="w-full max-w-[320px] bg-canvas-elevated h-[4px] overflow-hidden"
+              style={{ borderRadius: "0px" }}
+            >
+              <div className="h-full bg-primary progress-fill"></div>
+            </div>
+            {/* Status dots */}
+            <div className="flex items-center gap-[8px] mt-[20px]">
+              <div
+                className="w-[6px] h-[6px] bg-primary dot-pulse-1"
+                style={{ borderRadius: "50%" }}
+              ></div>
+              <div
+                className="w-[6px] h-[6px] bg-primary dot-pulse-2"
+                style={{ borderRadius: "50%" }}
+              ></div>
+              <div
+                className="w-[6px] h-[6px] bg-primary dot-pulse-3"
+                style={{ borderRadius: "50%" }}
+              ></div>
+            </div>
+            <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mt-[16px]">
+              Please wait...
+            </p>
+          </div>
+        )}
+        {/* ─── STEP: REVIEW ─── */}
+        {step === "review" && generatedReport && (
+          <>
+            <div className="flex-1 overflow-y-auto">
+              {/* Report info bar */}
+              <div className="px-xs sm:px-md py-[16px] border-b border-hairline flex flex-wrap items-center gap-[8px] sm:gap-[16px]">
+                <div className="flex items-center gap-[8px]">
+                  <Hash className="w-[14px] h-[14px] text-muted"></Hash>
+                  <span className="text-[12px] font-600 text-ink font-mono">
+                    {generatedReport.refId}
+                  </span>
+                </div>
+                <div className="w-[1px] h-[16px] bg-hairline hidden sm:block"></div>
+                <div
+                  className={`flex items-center gap-[6px] px-[10px] py-[4px] border ${getPriorityBg(generatedReport.priority)}`}
+                >
+                  <div
+                    className={`w-[6px] h-[6px] ${getPriorityColor(generatedReport.priority)}`}
+                    style={{ borderRadius: "50%" }}
+                  ></div>
+                  <span
+                    className={`text-[11px] font-600 uppercase tracking-[1px] ${getPriorityColor(generatedReport.priority)}`}
+                  >
+                    {generatedReport.priority}
+                  </span>
+                </div>
+                <div className="flex items-center gap-[6px] bg-canvas-elevated px-[10px] py-[4px] border border-hairline">
+                  <Tag className="w-[10px] h-[10px] text-primary"></Tag>
+                  <span className="text-[11px] font-600 uppercase tracking-[1px] text-ink">
+                    {generatedReport.issueType}
+                  </span>
+                </div>
+              </div>
+              {/* Editable report */}
+              <div className="px-xs sm:px-md py-md">
+                <div className="flex items-center justify-between mb-[12px]">
+                  <label className="block text-[11px] font-600 uppercase tracking-[1.1px] text-muted">
+                    Generated Report — Editable
+                  </label>
+                  <div className="flex items-center gap-[8px]">
+                    <button
+                      onClick={() => setEditableReport(generatedReport.report)}
+                      className="flex items-center gap-[6px] text-[11px] font-600 uppercase tracking-[1px] text-body hover:text-primary transition-colors cursor-pointer"
+                    >
+                      <RotateCcw className="w-[12px] h-[12px]"></RotateCcw>
+                      Reset
+                    </button>
+                  </div>
+                </div>
+                <textarea
+                  value={editableReport}
+                  onChange={(e) => setEditableReport(e.target.value)}
+                  rows={16}
+                  className="w-full bg-canvas-elevated border border-hairline text-ink text-[13px] font-mono leading-[1.6] p-[16px] resize-y focus:outline-none focus:border-primary transition-colors"
+                  style={{ borderRadius: "0px" }}
+                />
+                <div className="flex items-start gap-[8px] mt-[12px]">
+                  <Pencil className="w-[14px] h-[14px] text-primary mt-[2px] flex-shrink-0"></Pencil>
+                  <p className="text-[12px] font-400 leading-[1.5] text-muted">
+                    You can edit any part of this report before sending. Changes
+                    will be reflected in the final version sent to agencies.
+                  </p>
+                </div>
+              </div>
+              {/* Agency Selection */}
+              <div className="px-xs sm:px-md pb-md">
+                <div className="flex items-center justify-between mb-[12px]">
+                  <label className="block text-[11px] font-600 uppercase tracking-[1.1px] text-muted">
+                    Send Report To
+                  </label>
+                  <span className="text-[11px] font-600 uppercase tracking-[1px] text-primary">
+                    {selectedAgencies.length} selected
+                  </span>
+                </div>
+                <div className="flex flex-col gap-[4px]">
+                  {AGENCIES.map((agency) => {
+                    const isSelected = selectedAgencies.includes(agency.id);
+                    const isRecommended = generatedReport.relevantAgencies.some(
+                      (r) => r.id === agency.id,
+                    );
+                    return (
+                      <button
+                        key={agency.id}
+                        onClick={() => toggleAgency(agency.id)}
+                        className={`w-full flex items-start gap-[12px] p-[14px] border text-left transition-all cursor-pointer ${
+                          isSelected
+                            ? "border-primary bg-primary/5"
+                            : "border-hairline bg-transparent hover:border-muted"
+                        }`}
+                        style={{ borderRadius: "0px" }}
+                      >
+                        {/* Checkbox */}
+                        <div
+                          className={`w-[18px] h-[18px] flex-shrink-0 flex items-center justify-center border mt-[2px] transition-colors ${
+                            isSelected
+                              ? "bg-primary border-primary"
+                              : "border-muted bg-transparent"
+                          }`}
+                        >
+                          {isSelected && (
+                            <Check
+                              className="w-[12px] h-[12px] text-white"
+                              strokeWidth={3}
+                            ></Check>
+                          )}
+                        </div>
+                        {/* Agency info */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-[8px] flex-wrap">
+                            <span className="text-[13px] font-600 text-ink">
+                              {agency.name}
+                            </span>
+                            {isRecommended && (
+                              <span className="text-[9px] font-700 uppercase tracking-[1px] text-primary bg-primary/10 px-[6px] py-[2px]">
+                                Recommended
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[12px] text-muted mt-[2px] leading-[1.4]">
+                            {agency.fullName}
+                          </p>
+                          <div className="flex items-center gap-[6px] mt-[4px]">
+                            <Mail className="w-[10px] h-[10px] text-muted"></Mail>
+                            <span className="text-[11px] text-muted font-mono">
+                              {agency.email}
+                            </span>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              {/* ─── EMAIL FOR UPDATES ─── */}
+              <div className="px-xs sm:px-md pb-md border-t border-hairline pt-md">
+                <div className="flex items-center gap-[8px] mb-[12px]">
+                  <Mail className="w-[14px] h-[14px] text-primary flex-shrink-0"></Mail>
+                  <label className="block text-[11px] font-600 uppercase tracking-[1.1px] text-muted">
+                    Email for Updates
+                    <span className="text-muted-soft normal-case tracking-normal font-400 ml-[6px]">
+                      (optional)
+                    </span>
+                  </label>
+                </div>
+                <div className="relative">
+                  <div className="absolute left-[16px] top-1/2 -translate-y-1/2 pointer-events-none">
+                    <AtSign className="w-[16px] h-[16px] text-muted"></AtSign>
+                  </div>
+                  <input
+                    ref={emailInputRef}
+                    type="email"
+                    value={emailInput}
+                    onChange={(e) => {
+                      setEmailInput(e.target.value);
+                      if (emailError) setEmailError("");
+                    }}
+                    placeholder="you@example.com"
+                    className={`w-full bg-canvas-elevated border text-ink text-[14px] font-400 leading-[1.5] pl-[44px] pr-[16px] py-[14px] placeholder:text-muted focus:outline-none focus:border-primary transition-colors ${
+                      emailError ? "border-primary" : "border-hairline"
+                    } ${emailShake ? "shake" : ""}`}
+                    style={{ borderRadius: "0px" }}
+                  />
+                </div>
+                {emailError && (
+                  <div className="flex items-center gap-[6px] mt-[8px] fade-in-up">
+                    <AlertCircle className="w-[12px] h-[12px] text-primary flex-shrink-0"></AlertCircle>
+                    <p className="text-[12px] font-500 text-primary">
+                      {emailError}
+                    </p>
+                  </div>
+                )}
+                <div className="flex items-start gap-[8px] mt-[12px]">
+                  <Bell className="w-[14px] h-[14px] text-muted mt-[2px] flex-shrink-0"></Bell>
+                  <p className="text-[12px] font-400 leading-[1.5] text-muted">
+                    Provide your email to receive status updates on your report.
+                    We'll notify you when the agency responds or the issue is
+                    resolved. This is entirely optional.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Footer */}
+            <div className="border-t border-hairline px-xs sm:px-md py-[16px] flex items-center justify-between flex-shrink-0">
+              <button
+                onClick={() => setStep("input")}
+                className="flex items-center gap-[6px] text-[13px] font-600 uppercase tracking-[1px] text-body hover:text-ink px-[20px] py-[10px] transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-[14px] h-[14px]"></ArrowLeft>
+                Back
+              </button>
+              <div className="flex items-center gap-[8px]">
+                <button
+                  onClick={onClose}
+                  className="text-[13px] font-600 uppercase tracking-[1px] text-body hover:text-ink px-[20px] py-[10px] transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSubmitReport}
+                  disabled={selectedAgencies.length === 0 || isSubmitting}
+                  className={`text-[13px] font-700 uppercase tracking-[1.4px] px-[32px] py-[12px] transition-colors cursor-pointer flex items-center gap-[8px] ${
+                    selectedAgencies.length > 0 && !isSubmitting
+                      ? "bg-primary text-white hover:bg-primary-active"
+                      : "bg-hairline text-muted cursor-not-allowed"
+                  }`}
+                  style={{ borderRadius: "0px" }}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div
+                        className="w-[14px] h-[14px] border-[2px] border-white/30 border-t-white spinner"
+                        style={{ borderRadius: "50%" }}
+                      ></div>
+                      SENDING...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-[14px] h-[14px]"></Send>
+                      SEND REPORT ({selectedAgencies.length})
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+        {/* ─── STEP: SUBMITTED ─── */}
+        {step === "submitted" && (
           <div className="flex flex-col items-center justify-center py-[48px] px-[24px] text-center">
             <div
               className="w-[64px] h-[64px] bg-primary flex items-center justify-center mb-[24px]"
               style={{ borderRadius: "50%" }}
             >
-              <Check className="w-[32px] h-[32px] text-white" strokeWidth={3} />
+              <Check
+                className="w-[32px] h-[32px] text-white"
+                strokeWidth={3}
+              ></Check>
             </div>
             <h3 className="text-[20px] font-500 text-ink mb-[8px]">
               Report Submitted
             </h3>
-            <p className="text-[14px] font-400 leading-[1.5] text-body max-w-[360px] mb-[32px]">
-              FixFinder is analyzing your report. It will be classified and
-              routed to the correct agency within seconds.
+            <p className="text-[14px] font-400 leading-[1.5] text-body max-w-[360px] mb-[16px]">
+              Your report has been sent to {selectedAgencies.length}{" "}
+              {selectedAgencies.length === 1 ? "agency" : "agencies"}.{" "}
+              {emailInput.trim()
+                ? "A confirmation has been sent to your email. You'll receive updates as the case progresses."
+                : "You will receive a confirmation shortly."}
+            </p>
+            {/* Show selected agencies */}
+            <div className="flex flex-wrap justify-center gap-[8px] mb-[24px] max-w-[400px]">
+              {selectedAgencies.map((id) => {
+                const agency = AGENCIES.find((a) => a.id === id);
+                return agency ? (
+                  <span
+                    key={id}
+                    className="bg-canvas-elevated border border-hairline text-[11px] font-600 uppercase tracking-[1px] text-ink px-[12px] py-[6px]"
+                  >
+                    {agency.name}
+                  </span>
+                ) : null;
+              })}
+            </div>
+            {/* Show email confirmation note */}
+            {emailInput.trim() && (
+              <div className="flex items-center gap-[8px] bg-canvas-elevated border border-hairline px-[16px] py-[12px] mb-[24px] w-full max-w-[400px]">
+                <MailCheck className="w-[16px] h-[16px] text-primary flex-shrink-0"></MailCheck>
+                <p className="text-[12px] font-400 text-body text-left">
+                  Updates will be sent to{" "}
+                  <span className="text-ink font-500">{emailInput.trim()}</span>
+                </p>
+              </div>
+            )}
+            <p className="text-[12px] text-muted mb-[24px]">
+              Reference:{" "}
+              <span className="font-mono text-ink">
+                {generatedReport?.refId}
+              </span>
             </p>
             <button
               onClick={onClose}
@@ -531,4 +994,153 @@ export default function ReportModal({ isOpen, onClose }) {
       </div>
     </div>
   );
+}
+
+function generateReportContent(textInput, audioResult, uploadedImage) {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("en-PH", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const timeStr = now.toLocaleTimeString("en-PH", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const refId =
+    "AP-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+  let issueType = "General Complaint";
+  let priority = "Normal";
+  let category = "general";
+  const inputLower = (textInput || "").toLowerCase();
+  if (
+    inputLower.includes("fare") ||
+    inputLower.includes("driver") ||
+    inputLower.includes("overcharg") ||
+    inputLower.includes("transport") ||
+    inputLower.includes("jeep") ||
+    inputLower.includes("taxi") ||
+    inputLower.includes("bus")
+  ) {
+    issueType = "Fare / Transport Violation";
+    priority = "High";
+    category = "transport";
+  } else if (
+    inputLower.includes("fire") ||
+    inputLower.includes("sunog") ||
+    inputLower.includes("emergency") ||
+    inputLower.includes("burn") ||
+    inputLower.includes("flame")
+  ) {
+    issueType = "Fire / Emergency";
+    priority = "Critical";
+    category = "fire";
+  } else if (
+    inputLower.includes("road") ||
+    inputLower.includes("street") ||
+    inputLower.includes("pothole") ||
+    inputLower.includes("dark") ||
+    inputLower.includes("light") ||
+    inputLower.includes("dilim") ||
+    inputLower.includes("infrastructure")
+  ) {
+    issueType = "Infrastructure / Road Concern";
+    priority = "High";
+    category = "infrastructure";
+  } else if (
+    inputLower.includes("dump") ||
+    inputLower.includes("waste") ||
+    inputLower.includes("pollution") ||
+    inputLower.includes("trash") ||
+    inputLower.includes("basura") ||
+    inputLower.includes("environment")
+  ) {
+    issueType = "Environmental Violation";
+    priority = "High";
+    category = "environment";
+  } else if (
+    inputLower.includes("crime") ||
+    inputLower.includes("theft") ||
+    inputLower.includes("stolen") ||
+    inputLower.includes("assault") ||
+    inputLower.includes("security")
+  ) {
+    issueType = "Criminal Incident";
+    priority = "Critical";
+    category = "crime";
+  } else if (
+    inputLower.includes("water") ||
+    inputLower.includes("health") ||
+    inputLower.includes("sanitation") ||
+    inputLower.includes("sick") ||
+    inputLower.includes("hospital")
+  ) {
+    issueType = "Public Health Concern";
+    priority = "High";
+    category = "health";
+  } else if (
+    inputLower.includes("traffic") ||
+    inputLower.includes("congestion") ||
+    inputLower.includes("vehicle") ||
+    inputLower.includes("mmda")
+  ) {
+    issueType = "Traffic / Road Management";
+    priority = "Medium";
+    category = "traffic";
+  }
+  const relevantAgencies = AGENCIES.filter((a) =>
+    a.categories.some(
+      (c) =>
+        c === category ||
+        (category === "infrastructure" && (c === "roads" || c === "local")) ||
+        (category === "fire" && c === "emergency") ||
+        (category === "transport" && (c === "fare" || c === "traffic")),
+    ),
+  );
+  if (relevantAgencies.length === 0) {
+    AGENCIES.slice(0, 3).forEach((a) => {
+      if (!relevantAgencies.find((r) => r.id === a.id))
+        relevantAgencies.push(a);
+    });
+  }
+  const description =
+    textInput ||
+    (audioResult
+      ? "[Voice report transcribed — audio attached]"
+      : uploadedImage
+        ? "[Image-based report — visual evidence attached]"
+        : "");
+  const report = `OFFICIAL INCIDENT REPORT
+Reference: ${refId}
+Date: ${dateStr}
+Time: ${timeStr}
+──────────────────────────────────────
+ISSUE TYPE: ${issueType}
+PRIORITY: ${priority}
+──────────────────────────────────────
+DESCRIPTION OF INCIDENT:
+${description}
+──────────────────────────────────────
+OBSERVATIONS:
+• Report submitted via ActionPoint Orbit platform
+• Source: ${textInput ? "Text input" : audioResult ? "Voice recording" : uploadedImage ? "Image upload" : "Mixed input"}
+• ${audioResult ? "Audio evidence included\n• " : ""}${uploadedImage ? "Visual evidence attached\n• " : ""}AI classification confidence: High
+RECOMMENDED ACTIONS:
+1. Immediate review by responsible agency
+2. Investigation of reported incident
+3. Feedback to complainant within 5-7 business days
+4. Case resolution and status update
+──────────────────────────────────────
+This report was auto-generated by ActionPoint Orbit's FixFinder AI.
+For follow-ups, reference: ${refId}`;
+  return {
+    report,
+    refId,
+    issueType,
+    priority,
+    category,
+    dateStr,
+    timeStr,
+    relevantAgencies,
+  };
 }

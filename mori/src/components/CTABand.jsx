@@ -22,7 +22,7 @@ export default function CTABand({ onOpenModal }) {
           IT GETS SOLVED.
         </h2>
         <p className="text-[14px] font-400 leading-[1.5] text-body max-w-[480px] mx-auto mb-[40px]">
-          A complaint without direction goes nowhere. ActionPoint Orbit gives
+          A complaint without direction goes nowhere. Miro ActionPoint gives
           every problem a path to the right office.
         </p>
         <button

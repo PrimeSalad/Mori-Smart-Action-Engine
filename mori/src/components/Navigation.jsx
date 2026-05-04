@@ -36,7 +36,7 @@ export default function Navigation({ onOpenModal }) {
             <img src={logo} alt="logo.png" />
           </div>
           <span className="text-ink font-inter text-[15px] font-600 tracking-[0.65px] uppercase">
-            ActionPoint
+            Mori ActionPoint
           </span>
         </a>
 
@@ -82,7 +82,7 @@ export default function Navigation({ onOpenModal }) {
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className="block py-[12px] text-[13px] font-600 uppercase tracking-[0.65px] text-body hover:text-ink transition-colors"
+              className="block py-[12px] text-[13px] text-center font-600 uppercase tracking-[0.65px] text-body hover:text-ink transition-colors"
             >
               {link.label}
             </a>
@@ -93,7 +93,7 @@ export default function Navigation({ onOpenModal }) {
               onOpenModal();
             }}
             onClick={() => setMenuOpen(false)}
-            className="block mt-[16px] bg-primary text-white text-[13px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] text-center hover:bg-primary-active transition-colors"
+            className="w-full block mt-[16px] bg-primary text-white text-[13px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] text-center hover:bg-primary-active transition-colors"
             style={{ borderRadius: "0px" }}
           >
             GET STARTED
