@@ -68,11 +68,11 @@ export default function Footer() {
               <img src={logo} alt="logo.png" />
             </div>
             <span className="text-[13px] font-600 uppercase tracking-[0.65px] text-muted">
-              ActionPoint Orbit
+              Miro ActionPoint
             </span>
           </div>
           <p className="text-[13px] font-400 text-muted">
-            © 2025 ActionPoint Orbit. All rights reserved.
+            © 2025 Miro ActionPoint. All rights reserved.
           </p>
         </div>
       </div>

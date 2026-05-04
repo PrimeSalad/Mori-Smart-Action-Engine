@@ -40,7 +40,7 @@ export default function Hero({ onOpenModal }) {
           </div>
           <p className="text-[14px] sm:text-[16px] font-400 leading-[1.5] text-body max-w-[560px] mb-[40px]">
             We see problems every day online. We react. We share. But nothing
-            happens. ActionPoint Orbit is a website that turns online complaints
+            happens. Miro ActionPoint is a website that turns online complaints
             into clear, structured reports — and sends them to the right agency.
           </p>
 
@@ -53,7 +53,7 @@ export default function Hero({ onOpenModal }) {
               GET STARTED
             </button>
             <a
-              href="#features"
+              href="#how-it-works"
               className="bg-transparent text-ink text-[14px] font-700 uppercase tracking-[1.4px] px-[32px] py-[14px] h-[48px] flex items-center justify-center border border-white/30 hover:border-white transition-colors duration-200"
               style={{ borderRadius: "0px" }}
             >
