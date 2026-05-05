@@ -1,6 +1,6 @@
-# FixFinder Testing Guide
+# Mori ActionPoint Testing Guide
 
-Complete guide for testing all features of the FixFinder system.
+Complete guide for testing all features of the Mori ActionPoint system.
 
 ## 🎯 Prerequisites
 

@@ -1,24 +1,26 @@
-# FixFinder - AI-Powered Incident Reporting System
+# Mori ActionPoint - AI-Powered Incident Reporting System
 
-A modern web-based incident reporting platform that uses Google Gemini AI to analyze reports, suggest relevant government agencies, and generate professional email templates.
+A modern web-based incident reporting platform powered by Google Gemini AI that analyzes reports, suggests relevant government agencies, and generates professional email templates.
 
-![FixFinder](https://img.shields.io/badge/Status-Production%20Ready-green)
+![Mori ActionPoint](https://img.shields.io/badge/Status-Production%20Ready-green)
 ![Node.js](https://img.shields.io/badge/Node.js-18+-blue)
 ![React](https://img.shields.io/badge/React-18+-blue)
+![Gemini AI](https://img.shields.io/badge/Google-Gemini%202.5-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ## 🎯 Features
 
 ### Core Functionality
 - **Multi-Input Support**: Accept reports via text, image upload, or voice recording
-- **AI-Powered Analysis**: Google Gemini AI analyzes and categorizes incidents
-- **Smart Agency Matching**: Automatically suggests relevant government agencies
+- **Google Gemini AI**: Powered by Gemini 2.5 Flash for intelligent analysis
+- **Smart Agency Matching**: Automatically suggests relevant Philippine government agencies
 - **Professional Templates**: Generates formal email templates for reporting
 - **Editable Reports**: Review and modify AI-generated content before submission
 - **Email Notifications**: Send reports to agencies and confirmations to users
 
 ### Technical Features
 - **Modern Stack**: React + Tailwind CSS frontend, Node.js + Express backend
+- **AI-Powered**: Google Gemini 2.5 Flash for text, image, and audio analysis
 - **Secure**: Helmet security, CORS protection, rate limiting, input validation
 - **Scalable**: Modular architecture, async processing, error handling
 - **Developer-Friendly**: Clear documentation, easy setup, comprehensive testing
@@ -33,8 +35,8 @@ A modern web-based incident reporting platform that uses Google Gemini AI to ana
 
 1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd fixfinder
+git clone https://github.com/yourusername/Mori-Smart-Action-Engine.git
+cd Mori-Smart-Action-Engine
 ```
 
 2. **Setup Backend**
@@ -208,7 +210,7 @@ npm test
 **Heroku**:
 ```bash
 cd backend
-heroku create fixfinder-api
+heroku create mori-actionpoint-api
 heroku config:set GEMINI_API_KEY=your_key
 git push heroku main
 ```
@@ -246,7 +248,7 @@ npm run build
 
 Contributions are welcome! Please follow these steps:
 
-1. Fork the repository
+1. Fork the repository at [Mori-Smart-Action-Engine](https://github.com/yourusername/Mori-Smart-Action-Engine)
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
@@ -258,7 +260,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- **Google Gemini AI** - AI analysis and content generation
+- **Google Gemini AI** - Gemini 2.5 Flash for multimodal AI analysis
 - **React** - Frontend framework
 - **Tailwind CSS** - Styling
 - **Express.js** - Backend framework
@@ -267,8 +269,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Support
 
 - 📖 [Documentation](SETUP_GUIDE.md)
-- 🐛 [Issue Tracker](https://github.com/your-repo/issues)
-- 💬 [Discussions](https://github.com/your-repo/discussions)
+- 🐛 [Issue Tracker](https://github.com/yourusername/Mori-Smart-Action-Engine/issues)
+- 💬 [Discussions](https://github.com/yourusername/Mori-Smart-Action-Engine/discussions)
 
 ## 🗺️ Roadmap
 
@@ -277,14 +279,17 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [ ] Report tracking and status updates
 - [ ] Admin dashboard for agencies
 - [ ] Mobile app (React Native)
-- [ ] Multi-language support
+- [ ] Multi-language support (Filipino/Tagalog)
 - [ ] Advanced analytics and reporting
 - [ ] Integration with government APIs
+- [ ] Real-time notifications
+- [ ] Geolocation tagging
 
 ## 📈 Status
 
 - ✅ Core features complete
-- ✅ AI integration working
+- ✅ Google Gemini 2.5 Flash integration
+- ✅ Text, image, and voice analysis
 - ✅ Email notifications functional
 - ✅ Production ready
 - 🚧 Database integration (planned)
@@ -292,4 +297,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-**Built with ❤️ for better civic engagement**
+**Repository**: [Mori-Smart-Action-Engine](https://github.com/yourusername/Mori-Smart-Action-Engine)
+
+**Built with ❤️ for better civic engagement in the Philippines**

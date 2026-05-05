@@ -1,6 +1,6 @@
-# FixFinder Deployment Checklist
+# Mori ActionPoint Deployment Checklist
 
-Use this checklist to ensure proper deployment of the FixFinder system.
+Use this checklist to ensure proper deployment of the Mori ActionPoint system.
 
 ## 📋 Pre-Deployment Checklist
 
@@ -68,7 +68,7 @@ npm run dev
 #### Option 1: Heroku
 ```bash
 cd backend
-heroku create fixfinder-api
+heroku create mori-actionpoint-api
 heroku config:set GEMINI_API_KEY=your_key
 heroku config:set NODE_ENV=production
 heroku config:set CORS_ORIGIN=https://your-frontend.com

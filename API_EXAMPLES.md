@@ -1,4 +1,4 @@
-# FixFinder API Examples
+# Mori ActionPoint API Examples
 
 Complete examples of API requests and responses for testing and integration.
 

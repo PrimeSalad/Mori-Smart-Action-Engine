@@ -5,28 +5,28 @@ export default function UseCases() {
       tag: "TRANSPORT",
       title: "Overcharged Fare",
       description:
-        '"Siningil ako ng driver ng sobra." FixFinder classifies it as a fare violation and routes it to LTFRB — with a formal report ready to send.',
+        '"Siningil ako ng driver ng sobra." Mori ActionPoint classifies it as a fare violation and routes it to LTFRB — with a formal report ready to send.',
     },
     {
       image: "http://static.photos/nature/640x360/55",
       tag: "EMERGENCY",
       title: "Fire Emergency",
       description:
-        '"May sunog sa kabilang barangay, walang tulong." FixFinder detects an emergency and immediately shows Bureau of Fire contacts and hotlines.',
+        '"May sunog sa kabilang barangay, walang tulong." Mori ActionPoint detects an emergency and immediately shows Bureau of Fire contacts and hotlines.',
     },
     {
       image: "http://static.photos/cityscape/640x360/22",
       tag: "INFRASTRUCTURE",
       title: "Dark Streets",
       description:
-        '"Ang dilim ng street namin." FixFinder identifies it as an infrastructure concern and directs it to the local government unit responsible.',
+        '"Ang dilim ng street namin." Mori ActionPoint identifies it as an infrastructure concern and directs it to the local government unit responsible.',
     },
     {
       image: "http://static.photos/industry/640x360/33",
       tag: "ENVIRONMENT",
       title: "Illegal Dumping",
       description:
-        "Waste and hazardous materials spotted in public areas — FixFinder structures the report and sends it to environmental services.",
+        "Waste and hazardous materials spotted in public areas — Mori ActionPoint structures the report and sends it to environmental services.",
     },
   ];
 

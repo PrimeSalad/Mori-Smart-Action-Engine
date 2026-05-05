@@ -1,6 +1,6 @@
-# FixFinder Backend API
+# Mori ActionPoint Backend API
 
-Backend API for processing incident reports using Google Gemini AI, speech-to-text, and email notifications.
+Backend API for processing incident reports using Google Gemini 2.5 Flash AI and email notifications.
 
 ## Features
 
