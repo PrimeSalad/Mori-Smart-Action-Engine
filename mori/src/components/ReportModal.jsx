@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   AlertCircle,
   ArrowLeft,
@@ -24,6 +24,7 @@ import {
   Upload,
   X,
 } from "lucide-react";
+import { processReport, submitReport } from "../services/reportService";
 
 const AGENCIES = [
   {
@@ -121,6 +122,7 @@ export default function ReportModal({ isOpen, onClose }) {
   const [audioResult, setAudioResult] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageDescription, setImageDescription] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generatedReport, setGeneratedReport] = useState(null);
@@ -129,6 +131,7 @@ export default function ReportModal({ isOpen, onClose }) {
   const [emailInput, setEmailInput] = useState("");
   const [emailError, setEmailError] = useState("");
   const [emailShake, setEmailShake] = useState(false);
+  const [processingError, setProcessingError] = useState(null);
   const fileInputRef = useRef(null);
   const recordingTimerRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -145,6 +148,7 @@ export default function ReportModal({ isOpen, onClose }) {
       setAudioResult(null);
       setUploadedImage(null);
       setImagePreview(null);
+      setImageDescription("");
       setIsDragging(false);
       setIsSubmitting(false);
       setGeneratedReport(null);
@@ -153,6 +157,7 @@ export default function ReportModal({ isOpen, onClose }) {
       setEmailInput("");
       setEmailError("");
       setEmailShake(false);
+      setProcessingError(null);
     }
   }, [isOpen]);
   // Close on Escape
@@ -246,26 +251,62 @@ export default function ReportModal({ isOpen, onClose }) {
     return re.test(email);
   };
   const hasContent = textInput.trim() || audioResult || uploadedImage;
-  const handleGenerateReport = () => {
+  
+  const handleGenerateReport = async () => {
     setStep("generating");
-    setTimeout(() => {
+    setProcessingError(null);
+
+    try {
+      let reportData;
+      let inputType;
+
+      // Determine input type and prepare data
+      if (activeTab === "text" && textInput.trim()) {
+        inputType = "text";
+        reportData = { textInput: textInput.trim() };
+      } else if (activeTab === "image" && uploadedImage) {
+        inputType = "image";
+        reportData = {
+          imageFile: uploadedImage,
+          imageDescription: imageDescription.trim(),
+        };
+      } else if (activeTab === "record" && audioResult) {
+        inputType = "audio";
+        // Convert audio URL to blob
+        const response = await fetch(audioResult.url);
+        const audioBlob = await response.blob();
+        reportData = { audioBlob };
+      } else {
+        throw new Error("No valid input provided");
+      }
+
+      // Call backend API
+      const aiResult = await processReport(inputType, reportData);
+
+      // Generate report content with AI results
       const result = generateReportContent(
         textInput,
         audioResult,
         uploadedImage,
+        aiResult
       );
+
       setGeneratedReport(result);
       setEditableReport(result.report);
       setSelectedAgencies(result.relevantAgencies.map((a) => a.id));
       setStep("review");
-    }, 2800);
+    } catch (error) {
+      console.error("Error generating report:", error);
+      setProcessingError(error.message || "Failed to generate report. Please try again.");
+      setStep("input");
+    }
   };
   const toggleAgency = (id) => {
     setSelectedAgencies((prev) =>
       prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id],
     );
   };
-  const handleSubmitReport = () => {
+  const handleSubmitReport = async () => {
     // Validate email if provided
     if (emailInput.trim() && !validateEmail(emailInput)) {
       setEmailError("Please enter a valid email address");
@@ -274,12 +315,40 @@ export default function ReportModal({ isOpen, onClose }) {
       if (emailInputRef.current) emailInputRef.current.focus();
       return;
     }
+    
     setEmailError("");
     setIsSubmitting(true);
-    setTimeout(() => {
+    setProcessingError(null);
+
+    try {
+      // Prepare selected agencies data
+      const agencies = selectedAgencies.map(id => {
+        const agency = AGENCIES.find(a => a.id === id);
+        return {
+          id: agency.id,
+          name: agency.name,
+          fullName: agency.fullName,
+          email: agency.email,
+        };
+      });
+
+      // Submit report to backend
+      await submitReport({
+        reportContent: editableReport,
+        referenceId: generatedReport.refId,
+        selectedAgencies: agencies,
+        userEmail: emailInput.trim(),
+      });
+
       setIsSubmitting(false);
       setStep("submitted");
-    }, 1500);
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      setIsSubmitting(false);
+      setEmailError(error.message || "Failed to submit report. Please try again.");
+      setEmailShake(true);
+      setTimeout(() => setEmailShake(false), 500);
+    }
   };
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -602,6 +671,8 @@ export default function ReportModal({ isOpen, onClose }) {
                         )}
                       </div>
                       <textarea
+                        value={imageDescription}
+                        onChange={(e) => setImageDescription(e.target.value)}
                         placeholder="Add a description of what's shown in the image (optional)..."
                         rows={3}
                         className="w-full bg-canvas-elevated border border-hairline text-ink text-[14px] font-400 leading-[1.5] p-[16px] resize-none placeholder:text-muted focus:outline-none focus:border-primary transition-colors"
@@ -622,7 +693,13 @@ export default function ReportModal({ isOpen, onClose }) {
             {/* Footer */}
             <div className="border-t border-hairline px-xs sm:px-md py-[16px] flex items-center justify-between flex-shrink-0">
               <div className="flex items-center gap-[8px]">
-                {hasContent && (
+                {processingError && (
+                  <div className="flex items-center gap-[6px] text-primary">
+                    <AlertCircle className="w-[14px] h-[14px]"></AlertCircle>
+                    <span className="text-[11px] font-500">{processingError}</span>
+                  </div>
+                )}
+                {!processingError && hasContent && (
                   <div className="flex items-center gap-[6px]">
                     <div
                       className="w-[6px] h-[6px] bg-primary"
@@ -996,7 +1073,7 @@ export default function ReportModal({ isOpen, onClose }) {
   );
 }
 
-function generateReportContent(textInput, audioResult, uploadedImage) {
+function generateReportContent(textInput, audioResult, uploadedImage, aiResult = null) {
   const now = new Date();
   const dateStr = now.toLocaleDateString("en-PH", {
     year: "numeric",
@@ -1009,108 +1086,161 @@ function generateReportContent(textInput, audioResult, uploadedImage) {
   });
   const refId =
     "AP-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+
   let issueType = "General Complaint";
   let priority = "Normal";
   let category = "general";
-  const inputLower = (textInput || "").toLowerCase();
-  if (
-    inputLower.includes("fare") ||
-    inputLower.includes("driver") ||
-    inputLower.includes("overcharg") ||
-    inputLower.includes("transport") ||
-    inputLower.includes("jeep") ||
-    inputLower.includes("taxi") ||
-    inputLower.includes("bus")
-  ) {
-    issueType = "Fare / Transport Violation";
-    priority = "High";
-    category = "transport";
-  } else if (
-    inputLower.includes("fire") ||
-    inputLower.includes("sunog") ||
-    inputLower.includes("emergency") ||
-    inputLower.includes("burn") ||
-    inputLower.includes("flame")
-  ) {
-    issueType = "Fire / Emergency";
-    priority = "Critical";
-    category = "fire";
-  } else if (
-    inputLower.includes("road") ||
-    inputLower.includes("street") ||
-    inputLower.includes("pothole") ||
-    inputLower.includes("dark") ||
-    inputLower.includes("light") ||
-    inputLower.includes("dilim") ||
-    inputLower.includes("infrastructure")
-  ) {
-    issueType = "Infrastructure / Road Concern";
-    priority = "High";
-    category = "infrastructure";
-  } else if (
-    inputLower.includes("dump") ||
-    inputLower.includes("waste") ||
-    inputLower.includes("pollution") ||
-    inputLower.includes("trash") ||
-    inputLower.includes("basura") ||
-    inputLower.includes("environment")
-  ) {
-    issueType = "Environmental Violation";
-    priority = "High";
-    category = "environment";
-  } else if (
-    inputLower.includes("crime") ||
-    inputLower.includes("theft") ||
-    inputLower.includes("stolen") ||
-    inputLower.includes("assault") ||
-    inputLower.includes("security")
-  ) {
-    issueType = "Criminal Incident";
-    priority = "Critical";
-    category = "crime";
-  } else if (
-    inputLower.includes("water") ||
-    inputLower.includes("health") ||
-    inputLower.includes("sanitation") ||
-    inputLower.includes("sick") ||
-    inputLower.includes("hospital")
-  ) {
-    issueType = "Public Health Concern";
-    priority = "High";
-    category = "health";
-  } else if (
-    inputLower.includes("traffic") ||
-    inputLower.includes("congestion") ||
-    inputLower.includes("vehicle") ||
-    inputLower.includes("mmda")
-  ) {
-    issueType = "Traffic / Road Management";
-    priority = "Medium";
-    category = "traffic";
+  let aiSummary = "";
+  let aiAgencies = [];
+
+  // Use AI results if available
+  if (aiResult) {
+    aiSummary = aiResult.summary || "";
+    aiAgencies = aiResult.agencies || [];
+    
+    // Try to determine category from AI agencies
+    const agencyLower = aiAgencies.join(" ").toLowerCase();
+    if (agencyLower.includes("ltfrb") || agencyLower.includes("transport") || agencyLower.includes("mmda")) {
+      category = "transport";
+      issueType = "Fare / Transport Violation";
+      priority = "High";
+    } else if (agencyLower.includes("bfp") || agencyLower.includes("fire")) {
+      category = "fire";
+      issueType = "Fire / Emergency";
+      priority = "Critical";
+    } else if (agencyLower.includes("dpwh") || agencyLower.includes("infrastructure")) {
+      category = "infrastructure";
+      issueType = "Infrastructure / Road Concern";
+      priority = "High";
+    } else if (agencyLower.includes("denr") || agencyLower.includes("environment")) {
+      category = "environment";
+      issueType = "Environmental Violation";
+      priority = "High";
+    } else if (agencyLower.includes("pnp") || agencyLower.includes("nbi") || agencyLower.includes("police")) {
+      category = "crime";
+      issueType = "Criminal Incident";
+      priority = "Critical";
+    } else if (agencyLower.includes("doh") || agencyLower.includes("health")) {
+      category = "health";
+      issueType = "Public Health Concern";
+      priority = "High";
+    }
+  } else {
+    // Fallback to keyword detection
+    const inputLower = (textInput || "").toLowerCase();
+    if (
+      inputLower.includes("fare") ||
+      inputLower.includes("driver") ||
+      inputLower.includes("overcharg") ||
+      inputLower.includes("transport") ||
+      inputLower.includes("jeep") ||
+      inputLower.includes("taxi") ||
+      inputLower.includes("bus")
+    ) {
+      issueType = "Fare / Transport Violation";
+      priority = "High";
+      category = "transport";
+    } else if (
+      inputLower.includes("fire") ||
+      inputLower.includes("sunog") ||
+      inputLower.includes("emergency") ||
+      inputLower.includes("burn") ||
+      inputLower.includes("flame")
+    ) {
+      issueType = "Fire / Emergency";
+      priority = "Critical";
+      category = "fire";
+    } else if (
+      inputLower.includes("road") ||
+      inputLower.includes("street") ||
+      inputLower.includes("pothole") ||
+      inputLower.includes("dark") ||
+      inputLower.includes("light") ||
+      inputLower.includes("dilim") ||
+      inputLower.includes("infrastructure")
+    ) {
+      issueType = "Infrastructure / Road Concern";
+      priority = "High";
+      category = "infrastructure";
+    } else if (
+      inputLower.includes("dump") ||
+      inputLower.includes("waste") ||
+      inputLower.includes("pollution") ||
+      inputLower.includes("trash") ||
+      inputLower.includes("basura") ||
+      inputLower.includes("environment")
+    ) {
+      issueType = "Environmental Violation";
+      priority = "High";
+      category = "environment";
+    } else if (
+      inputLower.includes("crime") ||
+      inputLower.includes("theft") ||
+      inputLower.includes("stolen") ||
+      inputLower.includes("assault") ||
+      inputLower.includes("security")
+    ) {
+      issueType = "Criminal Incident";
+      priority = "Critical";
+      category = "crime";
+    } else if (
+      inputLower.includes("water") ||
+      inputLower.includes("health") ||
+      inputLower.includes("sanitation") ||
+      inputLower.includes("sick") ||
+      inputLower.includes("hospital")
+    ) {
+      issueType = "Public Health Concern";
+      priority = "High";
+      category = "health";
+    } else if (
+      inputLower.includes("traffic") ||
+      inputLower.includes("congestion") ||
+      inputLower.includes("vehicle") ||
+      inputLower.includes("mmda")
+    ) {
+      issueType = "Traffic / Road Management";
+      priority = "Medium";
+      category = "traffic";
+    }
   }
-  const relevantAgencies = AGENCIES.filter((a) =>
-    a.categories.some(
+
+  // Match AI agencies to our AGENCIES list
+  const relevantAgencies = AGENCIES.filter((a) => {
+    // First check if AI suggested this agency
+    if (aiAgencies.some(aiAgency => 
+      aiAgency.toLowerCase().includes(a.name.toLowerCase()) ||
+      aiAgency.toLowerCase().includes(a.fullName.toLowerCase())
+    )) {
+      return true;
+    }
+    
+    // Fallback to category matching
+    return a.categories.some(
       (c) =>
         c === category ||
         (category === "infrastructure" && (c === "roads" || c === "local")) ||
         (category === "fire" && c === "emergency") ||
         (category === "transport" && (c === "fare" || c === "traffic")),
-    ),
-  );
+    );
+  });
+
   if (relevantAgencies.length === 0) {
     AGENCIES.slice(0, 3).forEach((a) => {
       if (!relevantAgencies.find((r) => r.id === a.id))
         relevantAgencies.push(a);
     });
   }
+
   const description =
     textInput ||
     (audioResult
-      ? "[Voice report transcribed — audio attached]"
+      ? aiResult?.transcription || "[Voice report transcribed — audio attached]"
       : uploadedImage
-        ? "[Image-based report — visual evidence attached]"
+        ? aiSummary || "[Image-based report — visual evidence attached]"
         : "");
-  const report = `OFFICIAL INCIDENT REPORT
+
+  const report = aiResult?.email || `OFFICIAL INCIDENT REPORT
 Reference: ${refId}
 Date: ${dateStr}
 Time: ${timeStr}
@@ -1118,6 +1248,9 @@ Time: ${timeStr}
 ISSUE TYPE: ${issueType}
 PRIORITY: ${priority}
 ──────────────────────────────────────
+SUMMARY:
+${aiSummary || description}
+
 DESCRIPTION OF INCIDENT:
 ${description}
 ──────────────────────────────────────
@@ -1125,6 +1258,7 @@ OBSERVATIONS:
 • Report submitted via ActionPoint Orbit platform
 • Source: ${textInput ? "Text input" : audioResult ? "Voice recording" : uploadedImage ? "Image upload" : "Mixed input"}
 • ${audioResult ? "Audio evidence included\n• " : ""}${uploadedImage ? "Visual evidence attached\n• " : ""}AI classification confidence: High
+
 RECOMMENDED ACTIONS:
 1. Immediate review by responsible agency
 2. Investigation of reported incident
@@ -1133,6 +1267,7 @@ RECOMMENDED ACTIONS:
 ──────────────────────────────────────
 This report was auto-generated by ActionPoint Orbit's FixFinder AI.
 For follow-ups, reference: ${refId}`;
+
   return {
     report,
     refId,
