@@ -1,15 +1,15 @@
-# FixFinder - Complete Setup Guide
+# Mori ActionPoint - Complete Setup Guide
 
-This guide will help you set up the complete FixFinder system with React frontend and Node.js backend.
+This guide will help you set up the complete Mori ActionPoint system with React frontend and Node.js backend.
 
 ## 🎯 Overview
 
-FixFinder is a web-based incident reporting system that uses Google Gemini AI to:
-- Analyze text, image, and voice reports
-- Generate professional summaries
-- Suggest relevant government agencies
-- Create email templates
-- Send reports to agencies
+Mori ActionPoint is a web-based incident reporting system powered by Google Gemini AI that:
+- Analyzes text, image, and voice reports using Gemini 2.5 Flash
+- Generates professional summaries
+- Suggests relevant Philippine government agencies
+- Creates email templates
+- Sends reports to agencies
 
 ## 📋 Prerequisites
 
@@ -96,7 +96,7 @@ Frontend will run on `http://localhost:5173`
 
 ### Google Gemini API Setup
 
-**Required** - This is the core AI service.
+**Required** - This is the core AI service powered by Gemini 2.5 Flash.
 
 1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Create a new API key
@@ -105,6 +105,7 @@ Frontend will run on `http://localhost:5173`
    GEMINI_API_KEY=AIzaSy...your_key_here
    ```
 
+**Model Used**: Gemini 2.5 Flash (supports text, image, and audio analysis)
 **Free Tier**: 60 requests per minute
 
 ### Email Service Setup (Optional)
@@ -173,7 +174,7 @@ For transcribing voice recordings.
 ## 📁 Project Structure
 
 ```
-fixfinder/
+mori-action-point/
 ├── backend/                    # Node.js + Express API
 │   ├── src/
 │   │   ├── controllers/       # Request handlers
@@ -332,8 +333,8 @@ VITE_API_URL=https://your-backend-domain.com/api
 npm run dev  # Shows all logs
 
 # Production
-pm2 start server.js --name fixfinder
-pm2 logs fixfinder
+pm2 start server.js --name mori-actionpoint
+pm2 logs mori-actionpoint
 ```
 
 ### Check API Health
@@ -391,6 +392,6 @@ If you encounter issues:
 
 ## 🎉 You're Ready!
 
-Your FixFinder system should now be fully operational. Start by testing with simple text reports, then try images and voice recordings.
+Your Mori ActionPoint system should now be fully operational. Start by testing with simple text reports, then try images and voice recordings.
 
 Happy reporting! 🚀

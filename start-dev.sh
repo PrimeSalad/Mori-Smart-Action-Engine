@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# FixFinder Development Startup Script
+# Mori ActionPoint Development Startup Script
 
-echo "🚀 Starting FixFinder Development Environment..."
+echo "🚀 Starting Mori ActionPoint Development Environment..."
 echo ""
 
 # Check if .env exists in backend

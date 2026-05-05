@@ -40,7 +40,7 @@ export default function Hero({ onOpenModal }) {
           </div>
           <p className="text-[14px] sm:text-[16px] font-400 leading-[1.5] text-body max-w-[560px] mb-[40px]">
             We see problems every day online. We react. We share. But nothing
-            happens. Miro ActionPoint is a website that turns online complaints
+            happens. Mori ActionPoint is a platform powered by Google Gemini AI that turns online complaints
             into clear, structured reports — and sends them to the right agency.
           </p>
 

@@ -1,7 +1,7 @@
 @echo off
-REM FixFinder Development Startup Script for Windows
+REM Mori ActionPoint Development Startup Script for Windows
 
-echo 🚀 Starting FixFinder Development Environment...
+echo 🚀 Starting Mori ActionPoint Development Environment...
 echo.
 
 REM Check if .env exists in backend
@@ -60,8 +60,8 @@ echo Press Ctrl+C to stop servers
 echo.
 
 REM Start both servers
-start "FixFinder Backend" cmd /k "cd backend && npm run dev"
-start "FixFinder Frontend" cmd /k "cd mori && npm run dev"
+start "Mori ActionPoint Backend" cmd /k "cd backend && npm run dev"
+start "Mori ActionPoint Frontend" cmd /k "cd mori && npm run dev"
 
 echo.
 echo ✅ Servers started in separate windows!

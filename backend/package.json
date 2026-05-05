@@ -1,7 +1,7 @@
 {
-  "name": "fixfinder-backend",
+  "name": "mori-actionpoint-backend",
   "version": "1.0.0",
-  "description": "Backend API for FixFinder report processing",
+  "description": "Backend API for Mori ActionPoint powered by Google Gemini 2.5 Flash",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

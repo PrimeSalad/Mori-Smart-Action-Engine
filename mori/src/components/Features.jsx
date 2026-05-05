@@ -6,13 +6,13 @@ export default function Features() {
       icon: Globe,
       title: "Web Platform",
       description:
-        "No downloads, no installs. Open the site, paste a problem, and FixFinder does the rest — right in your browser.",
+        "No downloads, no installs. Open the site, report a problem, and Mori ActionPoint does the rest — right in your browser.",
     },
     {
       icon: Cpu,
-      title: "AI Issue Detection",
+      title: "Google Gemini AI",
       description:
-        "FixFinder reads the post, identifies the type of issue, and understands the context — no manual input needed.",
+        "Powered by Google Gemini 2.5 Flash. Analyzes text, images, and voice recordings to understand context and generate professional reports.",
     },
     {
       icon: FileText,
@@ -24,7 +24,7 @@ export default function Features() {
       icon: Route,
       title: "Direct Agency Routing",
       description:
-        "Not just categorized — directed. FixFinder tells you exactly which office handles the issue and how to reach them.",
+        "Not just categorized — directed. Mori ActionPoint tells you exactly which office handles the issue and how to reach them.",
     },
   ];
 
@@ -42,7 +42,7 @@ export default function Features() {
           </div>
           <p className="text-[14px] font-400 leading-[1.5] text-body max-w-[420px] mt-[16px] lg:mt-0">
             Most complaints never reach the right people. They're unclear,
-            unstructured, or sent to the wrong place. FixFinder changes that.
+            unstructured, or sent to the wrong place. Mori ActionPoint changes that with AI-powered analysis.
           </p>
         </div>
 

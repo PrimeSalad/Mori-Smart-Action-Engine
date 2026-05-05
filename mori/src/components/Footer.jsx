@@ -6,7 +6,7 @@ export default function Footer() {
     {
       title: "PRODUCT",
       links: [
-        "FixFinder AI",
+        "Mori ActionPoint AI",
         "Web Platform",
         "Agency Directory",
         "Report Builder",

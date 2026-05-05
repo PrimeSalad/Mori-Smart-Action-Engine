@@ -1,6 +1,6 @@
-# FixFinder Quick Reference
+# Mori ActionPoint Quick Reference
 
-Quick reference for developers working with FixFinder.
+Quick reference for developers working with Mori ActionPoint.
 
 ## 🚀 Quick Commands
 
@@ -121,7 +121,7 @@ cd mori && npm update
 ## 📁 Project Structure
 
 ```
-fixfinder/
+Mori-Smart-Action-Engine/
 ├── backend/
 │   ├── src/
 │   │   ├── controllers/      # Request handlers

@@ -5,23 +5,23 @@ export default function HowItWorks() {
     {
       icon: MousePointerClick,
       number: "01",
-      title: "Spot a Problem Online",
+      title: "Report a Problem",
       description:
-        "You see a complaint on social media — an overcharged fare, a fire, a dark street. One click activates FixFinder.",
+        "You see a problem — an overcharged fare, a fire, a dark street. Type it, upload a photo, or record your voice.",
     },
     {
       icon: Brain,
       number: "02",
-      title: "FixFinder Identifies the Issue",
+      title: "Gemini AI Analyzes",
       description:
-        "The AI reads the post and classifies it — transport violation, emergency, infrastructure concern, and more.",
+        "Google Gemini AI reads your input and classifies it — transport violation, emergency, infrastructure concern, and more.",
     },
     {
       icon: Building,
       number: "03",
       title: "Finds the Responsible Agency",
       description:
-        "FixFinder maps the issue to the right office — LTFRB for fares, Bureau of Fire for emergencies, local government for roads.",
+        "Mori ActionPoint maps the issue to the right office — LTFRB for fares, BFP for emergencies, DPWH for roads.",
     },
     {
       icon: FileText,
@@ -39,7 +39,7 @@ export default function HowItWorks() {
           Process
         </p>
         <h2 className="text-[26px] sm:text-[36px] font-500 leading-[1.2] tracking-[-0.36px] text-ink mb-[64px]">
-          How FixFinder Works
+          How Mori ActionPoint Works
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[8px]">
