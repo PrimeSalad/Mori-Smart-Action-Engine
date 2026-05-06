@@ -14,32 +14,36 @@ const floatingCards = [
     label: "Analyze with Mori",
     detail: "Critical issue detected",
     icon: SearchCheck,
-    className: "left-2 top-[14%] sm:left-0 sm:-translate-x-2 lg:-translate-x-6",
+    className: "-left-4 top-[10%] sm:-left-10 lg:-left-16",
+    anim: "float-card-1",
   },
   {
     label: "Fact-check: True",
     detail: "95% confidence",
     icon: CheckCircle2,
-    className: "right-2 top-[26%] sm:right-0 sm:translate-x-2 lg:translate-x-6",
+    className: "-right-4 top-[24%] sm:-right-10 lg:-right-16",
+    anim: "float-card-2",
   },
   {
     label: "Report Ready",
     detail: "Formal draft prepared",
     icon: ClipboardCheck,
-    className: "left-2 bottom-[30%] sm:-left-2 lg:-left-8",
+    className: "-left-4 bottom-[28%] sm:-left-10 lg:-left-16",
+    anim: "float-card-3",
   },
   {
     label: "Agency Routing",
     detail: "LGU and BFP matched",
     icon: Route,
-    className: "right-4 bottom-[14%] sm:right-2",
+    className: "-right-4 bottom-[10%] sm:-right-10 lg:-right-16",
+    anim: "float-card-4",
   },
 ];
 
 function FloatingCard({ card }) {
   return (
     <div
-      className={`absolute hidden min-w-[200px] rounded-2xl border border-white/10 bg-[#130b0a]/90 p-3 shadow-[0_24px_70px_-20px_rgba(0,0,0,0.65)] backdrop-blur-xl sm:block ${card.className}`}
+      className={`absolute z-20 hidden min-w-[200px] rounded-2xl border border-white/10 bg-[#130b0a]/90 p-3 shadow-[0_24px_70px_-20px_rgba(0,0,0,0.65)] backdrop-blur-xl sm:block ${card.anim} ${card.className}`}
     >
       <div className="flex items-center gap-3">
         <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff352b] to-[#ff9b3d] text-white shadow-[0_0_28px_-6px_rgba(255,84,39,0.55)]">
@@ -71,7 +75,7 @@ export default function Hero() {
       <div className="absolute left-[8%] top-[22%] -z-10 h-64 w-64 rounded-full bg-purple-700/20 blur-3xl" />
 
       <div className="mx-auto max-w-[1200px]">
-        <div className="overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.025] p-6 shadow-[0_30px_90px_-30px_rgba(0,0,0,0.65)] backdrop-blur sm:p-8 lg:p-10">
+        <div className="rounded-[32px] border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.025] p-6 shadow-[0_30px_90px_-30px_rgba(0,0,0,0.65)] backdrop-blur sm:p-8 lg:p-10">
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
             {/* Left: Copy */}
             <div className="relative z-10 max-w-[620px]">
@@ -121,8 +125,8 @@ export default function Hero() {
             </div>
 
             {/* Right: Mascot */}
-            <div className="relative mx-auto w-full max-w-[600px]">
-              <div className="relative aspect-[4/5] w-full">
+            <div className="relative mx-auto w-full max-w-[600px] overflow-visible">
+              <div className="relative aspect-[4/5] w-full overflow-visible">
                 {/* Stage glow + base */}
                 <div className="absolute inset-x-[8%] bottom-6 h-40 rounded-[50%] bg-gradient-to-r from-[#53120d] via-[#ff8a2f] to-[#170806] opacity-70 blur-2xl" />
                 <div className="absolute bottom-8 left-1/2 h-28 w-[70%] -translate-x-1/2 rounded-[50%] border border-orange-200/20 bg-gradient-to-b from-[#3a1b12] to-[#0a0504] shadow-[0_22px_70px_-20px_rgba(255,92,27,0.45)]" />

@@ -202,3 +202,32 @@ a,
 .shake {
   animation: shake 0.4s ease-in-out;
 }
+
+@keyframes float-1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes float-2 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes float-3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes float-4 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.float-card-1 {
+  animation: float-1 4s ease-in-out infinite;
+}
+.float-card-2 {
+  animation: float-2 5s ease-in-out infinite;
+}
+.float-card-3 {
+  animation: float-3 4.5s ease-in-out infinite;
+}
+.float-card-4 {
+  animation: float-4 5.5s ease-in-out infinite;
+}
