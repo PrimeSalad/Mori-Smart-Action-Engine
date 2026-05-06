@@ -1,4 +1,4 @@
-import { Menu, ShieldCheck, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import { GOOGLE_DRIVE_DOWNLOAD_LINK } from "../config/links";
@@ -67,10 +67,6 @@ export default function Navigation() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1.5 text-xs font-semibold text-emerald-100">
-            <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-            Civic AI
-          </span>
           <a
             href={downloadHref}
             className="inline-flex items-center justify-center rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#180705] shadow-[0_10px_30px_-12px_rgba(255,90,42,0.45)] transition duration-200 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300"

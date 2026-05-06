@@ -75,10 +75,9 @@ export default function Hero() {
       <div className="absolute left-[8%] top-[22%] -z-10 h-64 w-64 rounded-full bg-purple-700/20 blur-3xl" />
 
       <div className="mx-auto max-w-[1200px]">
-        <div className="rounded-[32px] border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.025] p-6 shadow-[0_30px_90px_-30px_rgba(0,0,0,0.65)] backdrop-blur sm:p-8 lg:p-10">
-          <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
-            {/* Left: Copy */}
-            <div className="relative z-10 max-w-[620px]">
+        <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.02fr] lg:gap-14">
+          {/* Left: Copy */}
+          <div className="relative z-10 max-w-[620px]">
               <p className="inline-flex items-center gap-2 rounded-full border border-orange-200/20 bg-orange-300/10 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] text-orange-100">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#ff4a2f] shadow-[0_0_14px_rgba(255,74,47,0.85)]" />
                 Scan. Verify. Report.
@@ -118,31 +117,26 @@ export default function Hero() {
                   Watch Demo
                 </a>
               </div>
+          </div>
 
-              <p className="mt-6 text-sm font-medium text-stone-300/70">
-                Take the right action with Mori.
-              </p>
-            </div>
+          {/* Right: Mascot */}
+          <div className="relative mx-auto w-full max-w-[530px] overflow-visible">
+            <div className="relative aspect-[4/5] w-full overflow-visible">
+              {/* Stage glow + base */}
+              <div className="absolute inset-x-[10%] bottom-12 h-36 rounded-[50%] bg-gradient-to-r from-[#53120d] via-[#ff8a2f] to-[#170806] opacity-70 blur-2xl" />
+              <div className="absolute bottom-14 left-1/2 h-24 w-[66%] -translate-x-1/2 rounded-[50%] border border-orange-200/20 bg-gradient-to-b from-[#3a1b12] to-[#0a0504] shadow-[0_22px_70px_-20px_rgba(255,92,27,0.45)]" />
+              <div className="absolute bottom-20 left-1/2 h-14 w-[54%] -translate-x-1/2 rounded-[50%] border border-white/10 bg-[#0d0707]" />
+              <div className="absolute inset-x-[20%] top-[20%] -z-10 h-[54%] rounded-full bg-[#ff5a2e]/20 blur-3xl" />
 
-            {/* Right: Mascot */}
-            <div className="relative mx-auto w-full max-w-[600px] overflow-visible">
-              <div className="relative aspect-[4/5] w-full overflow-visible">
-                {/* Stage glow + base */}
-                <div className="absolute inset-x-[8%] bottom-6 h-40 rounded-[50%] bg-gradient-to-r from-[#53120d] via-[#ff8a2f] to-[#170806] opacity-70 blur-2xl" />
-                <div className="absolute bottom-8 left-1/2 h-28 w-[70%] -translate-x-1/2 rounded-[50%] border border-orange-200/20 bg-gradient-to-b from-[#3a1b12] to-[#0a0504] shadow-[0_22px_70px_-20px_rgba(255,92,27,0.45)]" />
-                <div className="absolute bottom-14 left-1/2 h-16 w-[58%] -translate-x-1/2 rounded-[50%] border border-white/10 bg-[#0d0707]" />
-                <div className="absolute inset-x-[18%] top-[18%] -z-10 h-[58%] rounded-full bg-[#ff5a2e]/20 blur-3xl" />
+              <img
+                src={mascot}
+                alt="Mori pixel Roman mascot"
+                className="relative z-10 mx-auto h-[84%] w-auto max-w-[400px] translate-x-4 translate-y-20 object-contain drop-shadow-[0_34px_44px_rgba(0,0,0,0.5)]"
+              />
 
-                <img
-                  src={mascot}
-                  alt="Mori pixel Roman mascot"
-                  className="relative z-10 mx-auto h-full w-auto object-contain drop-shadow-[0_34px_44px_rgba(0,0,0,0.5)]"
-                />
-
-                {floatingCards.map((card) => (
-                  <FloatingCard key={card.label} card={card} />
-                ))}
-              </div>
+              {floatingCards.map((card) => (
+                <FloatingCard key={card.label} card={card} />
+              ))}
             </div>
           </div>
         </div>

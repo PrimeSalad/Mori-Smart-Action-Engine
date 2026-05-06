@@ -32,7 +32,7 @@ const installSteps = [
     icon: DownloadCloud,
     title: "Step 1 — Download the extension",
     items: [
-      "Go to our Google Drive link.",
+      "Click the download link.",
       "Download mori-extension.zip.",
       "Extract the ZIP file to a folder on your computer.",
     ],
@@ -137,7 +137,7 @@ function InstallGuide() {
       <div className="relative mx-auto max-w-[1200px]">
         <div className="max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c42114]">
-            Deployment phase
+            Installation guide
           </p>
           <h2 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
             How to install Mori.
@@ -186,60 +186,64 @@ function Workflow() {
   return (
     <section
       id="how-to-use"
-      className="bg-[#0d0807] px-6 py-20 sm:py-24 lg:px-8 lg:py-28"
+      className="bg-[#0d0807] px-6 py-16 sm:py-20 lg:px-8 lg:py-24"
     >
       <div className="mx-auto max-w-[1200px]">
-        <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-14">
-          <div>
+        <div className="grid gap-8 lg:grid-cols-[1fr_0.82fr] lg:items-end lg:gap-12">
+          <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ff8a3d]">
               The Mori workflow
             </p>
             <h2 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl">
               From captured evidence to official action.
             </h2>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-stone-300/80 sm:text-lg">
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-stone-300/80 sm:text-lg">
               A side-panel flow that keeps text, links, screenshots, and report
               drafts connected from the moment you capture them.
             </p>
+          </div>
 
-            <div className="mt-8 rounded-3xl border border-white/10 bg-white/[0.04] p-5">
-              <div className="flex items-center gap-4">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff8a3d]">
-                  <FolderOpen className="h-6 w-6 text-white" aria-hidden="true" />
-                </span>
-                <div className="leading-tight">
-                  <p className="text-sm font-semibold text-white">
-                    Evidence-ready
-                  </p>
-                  <p className="mt-1 text-sm text-stone-400">
-                    Text, links, screenshots, and drafts stay connected.
-                  </p>
-                </div>
+          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_60px_-36px_rgba(0,0,0,0.65)]">
+            <div className="flex items-center gap-4">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff8a3d]">
+                <FolderOpen className="h-5 w-5 text-white" aria-hidden="true" />
+              </span>
+              <div className="leading-tight">
+                <p className="text-sm font-semibold text-white">
+                  Evidence-ready
+                </p>
+                <p className="mt-1 text-sm leading-6 text-stone-400">
+                  Text, links, screenshots, and drafts stay connected.
+                </p>
               </div>
             </div>
           </div>
+        </div>
 
-          <ol className="space-y-4">
-            {workflowSteps.map((step, index) => (
+        <ol className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+          {workflowSteps.map((step, index) => {
+            const spanClass = index < 2 ? "lg:col-span-3" : "lg:col-span-2";
+
+            return (
               <li
                 key={step.title}
-                className="grid gap-5 rounded-3xl border border-white/10 bg-gradient-to-r from-white/[0.07] to-white/[0.025] p-6 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.6)] sm:grid-cols-[64px_1fr] sm:p-7"
+                className={`rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.025] p-5 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.6)] sm:p-6 ${spanClass}`}
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f8efe5] text-xl font-bold text-[#d92b18]">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold leading-snug text-white sm:text-xl">
+                <div className="flex items-center gap-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#f8efe5] text-base font-bold text-[#d92b18]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="text-lg font-semibold leading-snug text-white">
                     {step.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-7 text-stone-300/75 sm:text-base">
-                    {step.description}
-                  </p>
                 </div>
+                <p className="mt-4 text-sm leading-6 text-stone-300/75">
+                  {step.description}
+                </p>
               </li>
-            ))}
-          </ol>
-        </div>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );
