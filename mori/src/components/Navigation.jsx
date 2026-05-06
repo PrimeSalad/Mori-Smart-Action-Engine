@@ -1,5 +1,5 @@
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import logo from "../assets/logo.png";
 import { GOOGLE_DRIVE_DOWNLOAD_LINK } from "../config/links";
 
@@ -12,37 +12,25 @@ const navLinks = [
 
 export default function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const downloadHref = GOOGLE_DRIVE_DOWNLOAD_LINK || "#install";
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header
-      className={`fixed left-0 top-0 z-50 w-full px-4 transition-all duration-300 sm:px-6 ${
-        scrolled ? "pt-3" : "pt-5"
-      }`}
-    >
+    <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-[#0b0706]/90 px-4 py-3 shadow-[0_18px_70px_-24px_rgba(0,0,0,0.65)] backdrop-blur-xl transition-all duration-300 sm:px-6">
       <nav
         aria-label="Primary navigation"
-        className={`mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 rounded-full border px-4 transition-all duration-300 sm:px-6 ${
-          scrolled
-            ? "border-white/10 bg-[#0b0706]/90 shadow-[0_18px_70px_-20px_rgba(0,0,0,0.55)] backdrop-blur-xl"
-            : "border-white/10 bg-white/[0.04] backdrop-blur-md"
-        }`}
+        className="mx-auto flex h-16 max-w-[1200px] items-center justify-between gap-4 px-4 transition-all duration-300 sm:px-6"
       >
         <a
           href="#home"
           className="flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300"
           aria-label="Mori home"
         >
-          <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-orange-200/25 bg-gradient-to-br from-[#ff3126] to-[#ff8a3d] shadow-[0_0_28px_-6px_rgba(255,90,42,0.55)]">
-            <img src={logo} alt="" className="h-7 w-7 object-contain" />
+          <span className="flex h-12 w-12 items-center justify-center">
+            <img
+              src={logo}
+              alt=""
+              className="h-10 w-10 object-contain drop-shadow-[0_0_18px_rgba(255,90,42,0.35)]"
+            />
           </span>
           <span className="flex flex-col leading-none">
             <span className="text-sm font-bold uppercase tracking-[0.22em] text-white">
