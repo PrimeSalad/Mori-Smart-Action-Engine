@@ -113,6 +113,11 @@ const AGENCIES = [
   },
 ];
 
+const WAVE_BAR_HEIGHTS = [
+  8, 14, 20, 12, 24, 16, 10, 22, 18, 26,
+  12, 20, 14, 24, 16, 10, 22, 18, 26, 12,
+];
+
 export default function ReportModal({ isOpen, onClose }) {
   const [step, setStep] = useState("input");
   const [activeTab, setActiveTab] = useState("text");
@@ -137,29 +142,6 @@ export default function ReportModal({ isOpen, onClose }) {
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
   const emailInputRef = useRef(null);
-  // Reset state on open
-  useEffect(() => {
-    if (isOpen) {
-      setStep("input");
-      setActiveTab("text");
-      setTextInput("");
-      setIsRecording(false);
-      setRecordingTime(0);
-      setAudioResult(null);
-      setUploadedImage(null);
-      setImagePreview(null);
-      setImageDescription("");
-      setIsDragging(false);
-      setIsSubmitting(false);
-      setGeneratedReport(null);
-      setEditableReport("");
-      setSelectedAgencies([]);
-      setEmailInput("");
-      setEmailError("");
-      setEmailShake(false);
-      setProcessingError(null);
-    }
-  }, [isOpen]);
   // Close on Escape
   useEffect(() => {
     const handleKey = (e) => {
@@ -517,12 +499,12 @@ export default function ReportModal({ isOpen, onClose }) {
                         </p>
                       </div>
                       <div className="flex items-center gap-[3px] h-[32px]">
-                        {Array.from({ length: 20 }).map((_, i) => (
+                        {WAVE_BAR_HEIGHTS.map((height, i) => (
                           <div
                             key={i}
                             className="w-[3px] bg-primary wave-bar"
                             style={{
-                              height: `${Math.max(4, Math.random() * 20)}px`,
+                              height: `${height}px`,
                               animationDelay: `${i * 0.08}s`,
                               borderRadius: "2px",
                             }}
