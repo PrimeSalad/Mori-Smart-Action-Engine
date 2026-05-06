@@ -1,71 +1,73 @@
-import { Globe, Cpu, FileText, Route } from "lucide-react";
+import {
+  BrainCircuit,
+  Building2,
+  Download,
+  FileStack,
+  ShieldQuestion,
+} from "lucide-react";
+
+const features = [
+  {
+    icon: BrainCircuit,
+    title: "Intelligent Post Analysis",
+    description:
+      "Automatically extract the core facts from any social media post or news article. Mori identifies the issue category, urgency level, and recommended course of action in seconds.",
+  },
+  {
+    icon: ShieldQuestion,
+    title: "Mori Search Fact-Checking",
+    description:
+      "Verify suspicious claims with a deep-search engine that identifies credible sources and provides a transparency verdict, helping you fight misinformation before it spreads.",
+  },
+  {
+    icon: Building2,
+    title: "Automated Agency Routing",
+    description:
+      "No more guessing where to send a report. Mori intelligently maps identified issues to the correct government agencies and organizations, providing official email addresses and escalation paths.",
+  },
+  {
+    icon: FileStack,
+    title: "Professional Report Builder",
+    description:
+      "Transform social media evidence into formal, actionable reports. Mori generates structured drafts, manages screenshot evidence with cryptographic hashing for integrity, and provides real-time email previews.",
+  },
+  {
+    icon: Download,
+    title: "Enterprise-Grade Export",
+    description:
+      "Secure your documentation by downloading reports as professionally formatted PDFs or editable Word documents, ready for official submission or legal filing.",
+  },
+];
 
 export default function Features() {
-  const features = [
-    {
-      icon: Globe,
-      title: "Web Platform",
-      description:
-        "No downloads, no installs. Open the site, report a problem, and Mori ActionPoint does the rest — right in your browser.",
-    },
-    {
-      icon: Cpu,
-      title: "Google Gemini AI",
-      description:
-        "Powered by Google Gemini 2.5 Flash. Analyzes text, images, and voice recordings to understand context and generate professional reports.",
-    },
-    {
-      icon: FileText,
-      title: "Auto-Generated Reports",
-      description:
-        "Transforms vague complaints into formal, actionable reports. Clear language. Structured details. Ready to send.",
-    },
-    {
-      icon: Route,
-      title: "Direct Agency Routing",
-      description:
-        "Not just categorized — directed. Mori ActionPoint tells you exactly which office handles the issue and how to reach them.",
-    },
-  ];
-
   return (
-    <section id="features" className="bg-canvas py-[96px]">
-      <div className="max-w-[1280px] mx-auto px-xs sm:px-md">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-[64px]">
-          <div>
-            <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-primary mb-[16px]">
-              Capabilities
-            </p>
-            <h2 className="text-[26px] sm:text-[36px] font-500 leading-[1.2] tracking-[-0.36px] text-ink">
-              The Problem Is Action
-            </h2>
-          </div>
-          <p className="text-[14px] font-400 leading-[1.5] text-body max-w-[420px] mt-[16px] lg:mt-0">
-            Most complaints never reach the right people. They're unclear,
-            unstructured, or sent to the wrong place. Mori ActionPoint changes that with AI-powered analysis.
+    <section id="features" className="bg-[#0d0807] px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1180px]">
+        <div className="max-w-3xl">
+          <p className="text-sm font-black uppercase tracking-[0.2em] text-[#ff8a3d]">
+            Key features
           </p>
+          <h2 className="mt-4 text-4xl font-black leading-tight text-white sm:text-5xl">
+            Built for verified civic action, not passive scrolling.
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-[8px]">
-          {features.map((feature) => (
-            <div
+        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+          {features.map((feature, index) => (
+            <article
               key={feature.title}
-              className="bg-canvas-elevated p-[32px] flex flex-col"
-              style={{ borderRadius: "0px" }}
+              className={`group rounded-[28px] border border-white/10 bg-gradient-to-b from-white/[0.075] to-white/[0.035] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.25)] transition duration-200 hover:-translate-y-1 hover:border-orange-200/30 ${
+                index < 3 ? "lg:col-span-2" : "lg:col-span-3"
+              }`}
             >
-              <div
-                className="w-[48px] h-[48px] border border-hairline flex items-center justify-center mb-[24px]"
-                style={{ borderRadius: "0px" }}
-              >
-                <feature.icon className="w-[20px] h-[20px] text-body"></feature.icon>
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff9b3d] text-white shadow-[0_0_36px_rgba(255,77,37,0.32)]">
+                <feature.icon className="h-7 w-7" aria-hidden="true" />
               </div>
-              <h3 className="text-[18px] font-500 leading-[1.4] tracking-[0.08px] text-ink mb-[12px]">
-                {feature.title}
-              </h3>
-              <p className="text-[14px] font-400 leading-[1.5] text-body">
+              <h3 className="text-xl font-black text-white">{feature.title}</h3>
+              <p className="mt-4 text-base leading-7 text-stone-300/75">
                 {feature.description}
               </p>
-            </div>
+            </article>
           ))}
         </div>
       </div>

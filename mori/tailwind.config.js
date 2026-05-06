@@ -19,7 +19,8 @@ export default {
         "surface-strong-light": "#ebebeb",
       },
       fontFamily: {
-        inter: ["Inter", "-apple-system", "system-ui", "sans-serif"],
+        poppins: ["Poppins", "-apple-system", "system-ui", "sans-serif"],
+        questrial: ["Questrial", "-apple-system", "system-ui", "sans-serif"],
       },
       spacing: {
         xxxs: "4px",

@@ -1,80 +1,45 @@
-import { Shield } from "lucide-react";
 import logo from "../assets/logo.png";
 
+const footerLinks = [
+  { label: "Home", href: "#home" },
+  { label: "How to Use", href: "#how-to-use" },
+  { label: "About", href: "#about" },
+  { label: "Support", href: "#support" },
+];
+
 export default function Footer() {
-  const linkGroups = [
-    {
-      title: "PRODUCT",
-      links: [
-        "Mori ActionPoint AI",
-        "Web Platform",
-        "Agency Directory",
-        "Report Builder",
-      ],
-    },
-    {
-      title: "COMPANY",
-      links: ["About", "Careers", "Blog", "Press"],
-    },
-    {
-      title: "RESOURCES",
-      links: ["Documentation", "Agency Index", "FAQ", "Community"],
-    },
-    {
-      title: "LEGAL",
-      links: ["Privacy", "Terms", "Data Policy", "Compliance"],
-    },
-    {
-      title: "CONNECT",
-      links: ["Twitter", "LinkedIn", "GitHub", "Contact"],
-    },
-  ];
-
   return (
-    <footer id="contact" className="bg-canvas border-t border-hairline">
-      <div className="max-w-[1280px] mx-auto px-xs sm:px-md py-[64px]">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-[32px] mb-[64px]">
-          {linkGroups.map((group) => (
-            <div key={group.title}>
-              <p className="text-[11px] font-600 uppercase tracking-[1.1px] text-muted mb-[16px]">
-                {group.title}
-              </p>
-              <ul className="space-y-[8px]">
-                {group.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-[13px] font-400 leading-[1.5] text-body hover:text-ink transition-colors duration-200"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div className="border-t border-hairline pt-[32px] flex flex-col sm:flex-row items-center justify-between gap-[16px]">
-          <div className="flex items-center gap-[8px]">
-            <div
-              className="w-[24px] h-[24px] bg-primary flex items-center justify-center"
-              style={{ borderRadius: "0px" }}
-            >
-              <Shield
-                className="w-[12px] h-[12px] text-white"
-                strokeWidth={2.5}
-              />
-              <img src={logo} alt="logo.png" />
-            </div>
-            <span className="text-[13px] font-600 uppercase tracking-[0.65px] text-muted">
-              Miro ActionPoint
+    <footer className="border-t border-white/10 bg-[#070504] px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-[1180px] flex-col gap-6 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
+        <a href="#home" className="flex items-center justify-center gap-3 sm:justify-start">
+          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff8a3d]">
+            <img src={logo} alt="" className="h-7 w-7 object-contain" />
+          </span>
+          <span>
+            <span className="block text-sm font-black uppercase tracking-[0.22em] text-white">
+              MORI
             </span>
-          </div>
-          <p className="text-[13px] font-400 text-muted">
-            © 2025 Miro ActionPoint. All rights reserved.
-          </p>
-        </div>
+            <span className="block text-xs font-semibold text-stone-400">
+              Smart Action Engine
+            </span>
+          </span>
+        </a>
+
+        <nav aria-label="Footer navigation" className="flex flex-wrap justify-center gap-5">
+          {footerLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm font-semibold text-stone-400 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300"
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        <p className="text-sm text-stone-500">
+          © 2026 Mori. Scan. Verify. Report.
+        </p>
       </div>
     </footer>
   );
