@@ -41,30 +41,39 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="bg-[#0d0807] px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1180px]">
+    <section
+      id="features"
+      className="bg-[#0d0807] px-6 py-20 sm:py-24 lg:px-8 lg:py-28"
+    >
+      <div className="mx-auto max-w-[1200px]">
         <div className="max-w-3xl">
-          <p className="text-sm font-black uppercase tracking-[0.2em] text-[#ff8a3d]">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ff8a3d]">
             Key features
           </p>
-          <h2 className="mt-4 text-4xl font-black leading-tight text-white sm:text-5xl">
+          <h2 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl">
             Built for verified civic action, not passive scrolling.
           </h2>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-stone-300/80 sm:text-lg">
+            Five focused capabilities that turn signals from your feed into
+            evidence-backed reports — all without leaving your browser.
+          </p>
         </div>
 
-        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
+        <div className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 lg:mt-14 lg:grid-cols-6">
           {features.map((feature, index) => (
             <article
               key={feature.title}
-              className={`group rounded-[28px] border border-white/10 bg-gradient-to-b from-white/[0.075] to-white/[0.035] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.25)] transition duration-200 hover:-translate-y-1 hover:border-orange-200/30 ${
+              className={`group rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-6 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.6)] transition duration-200 hover:-translate-y-1 hover:border-orange-200/30 sm:p-7 ${
                 index < 3 ? "lg:col-span-2" : "lg:col-span-3"
               }`}
             >
-              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff9b3d] text-white shadow-[0_0_36px_rgba(255,77,37,0.32)]">
-                <feature.icon className="h-7 w-7" aria-hidden="true" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff9b3d] text-white shadow-[0_0_36px_-8px_rgba(255,77,37,0.45)]">
+                <feature.icon className="h-6 w-6" aria-hidden="true" />
               </div>
-              <h3 className="text-xl font-black text-white">{feature.title}</h3>
-              <p className="mt-4 text-base leading-7 text-stone-300/75">
+              <h3 className="mt-6 text-lg font-semibold leading-snug text-white sm:text-xl">
+                {feature.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-stone-300/75 sm:text-base">
                 {feature.description}
               </p>
             </article>

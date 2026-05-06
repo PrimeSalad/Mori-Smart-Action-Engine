@@ -11,6 +11,7 @@
 }
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 body {
   font-family:
@@ -18,8 +19,11 @@ body {
     -apple-system,
     system-ui,
     sans-serif;
-  background: #181818;
+  background: #070504;
   color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 h1,
@@ -54,16 +58,18 @@ a,
   color: #fff;
 }
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #181818;
+  background: #070504;
 }
 ::-webkit-scrollbar-thumb {
-  background: #303030;
+  background: #2a1f1c;
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #da291c;
+  background: #ff5a2e;
 }
 @keyframes modalIn {
   from {
