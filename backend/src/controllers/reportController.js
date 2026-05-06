@@ -2,6 +2,30 @@ const geminiService = require('../services/geminiService');
 const emailService = require('../services/emailService');
 
 /**
+ * Sanitize a string for safe inclusion in HTML
+ */
+function escapeHtml(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+/**
+ * Generic internal error response — never leaks stack traces
+ */
+function internalError(res, err, context) {
+  console.error(`[${context}]`, err);
+  return res.status(500).json({
+    success: false,
+    error: 'An unexpected error occurred. Please try again.',
+  });
+}
+
+/**
  * Process report submission and generate AI analysis
  */
 exports.processReport = async (req, res) => {
@@ -9,15 +33,9 @@ exports.processReport = async (req, res) => {
     const { type, textInput, imageDescription } = req.body;
     let analysisResult;
 
-    // Handle different input types
     switch (type) {
       case 'text':
-        if (!textInput || !textInput.trim()) {
-          return res.status(400).json({
-            success: false,
-            error: 'Text input is required',
-          });
-        }
+        // textInput already validated + trimmed by validator
         analysisResult = await geminiService.analyzeText(textInput);
         break;
 
@@ -42,8 +60,6 @@ exports.processReport = async (req, res) => {
             error: 'Audio file is required',
           });
         }
-
-        // Use Gemini to analyze audio directly (includes transcription)
         analysisResult = await geminiService.analyzeAudio(
           req.file.buffer,
           req.file.mimetype
@@ -53,12 +69,11 @@ exports.processReport = async (req, res) => {
       default:
         return res.status(400).json({
           success: false,
-          error: 'Invalid input type. Must be text, image, or audio',
+          error: 'Invalid input type',
         });
     }
 
-    // Return the analysis result
-    res.json({
+    return res.json({
       success: true,
       data: {
         summary: analysisResult.summary,
@@ -67,12 +82,8 @@ exports.processReport = async (req, res) => {
         transcription: analysisResult.transcription || null,
       },
     });
-  } catch (error) {
-    console.error('Error processing report:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message || 'Failed to process report',
-    });
+  } catch (err) {
+    return internalError(res, err, 'processReport');
   }
 };
 
@@ -81,40 +92,32 @@ exports.processReport = async (req, res) => {
  */
 exports.submitReport = async (req, res) => {
   try {
-    const {
-      reportContent,
-      referenceId,
-      selectedAgencies,
-      userEmail,
-    } = req.body;
-
-    // Validate required fields
-    if (!reportContent || !referenceId || !selectedAgencies || selectedAgencies.length === 0) {
-      return res.status(400).json({
-        success: false,
-        error: 'Missing required fields',
-      });
-    }
+    const { reportContent, referenceId, selectedAgencies, userEmail } = req.body;
 
     const results = {
       agencyEmails: [],
       userConfirmation: null,
     };
 
-    // Send emails to agencies if email service is configured
+    // Send emails to agencies
     try {
       const agencyResults = await emailService.sendReportToAgencies(
         selectedAgencies,
         reportContent,
         referenceId
       );
-      results.agencyEmails = agencyResults;
-    } catch (error) {
-      console.warn('Email service not configured, skipping agency emails:', error.message);
-      results.agencyEmails = selectedAgencies.map(agency => ({
-        agency: agency.name,
+      // Strip internal error details from agency results before returning
+      results.agencyEmails = agencyResults.map((r) => ({
+        agency: escapeHtml(r.agency),
+        success: r.success,
+        ...(r.success ? {} : { error: 'Delivery failed' }),
+      }));
+    } catch (err) {
+      console.warn('[submitReport] Email service unavailable:', err.message);
+      results.agencyEmails = selectedAgencies.map((agency) => ({
+        agency: escapeHtml(agency.name),
         success: false,
-        error: 'Email service not configured',
+        error: 'Email service not available',
       }));
     }
 
@@ -127,26 +130,19 @@ exports.submitReport = async (req, res) => {
           referenceId,
           selectedAgencies
         );
-        results.userConfirmation = confirmationResult;
-      } catch (error) {
-        console.warn('Failed to send user confirmation:', error.message);
-        results.userConfirmation = {
-          success: false,
-          error: error.message,
-        };
+        results.userConfirmation = { success: confirmationResult.success };
+      } catch (err) {
+        console.warn('[submitReport] User confirmation failed:', err.message);
+        results.userConfirmation = { success: false, error: 'Confirmation email could not be sent' };
       }
     }
 
-    res.json({
+    return res.json({
       success: true,
       message: 'Report submitted successfully',
       data: results,
     });
-  } catch (error) {
-    console.error('Error submitting report:', error);
-    res.status(500).json({
-      success: false,
-      error: error.message || 'Failed to submit report',
-    });
+  } catch (err) {
+    return internalError(res, err, 'submitReport');
   }
 };

@@ -3,6 +3,7 @@ const router = express.Router();
 const reportController = require('../controllers/reportController');
 const reportValidator = require('../validators/reportValidator');
 const upload = require('../middleware/upload');
+const { verifyFileSignature } = require('../middleware/upload');
 
 /**
  * POST /api/reports/process
@@ -11,6 +12,7 @@ const upload = require('../middleware/upload');
 router.post(
   '/process',
   upload.single('file'),
+  verifyFileSignature,
   reportValidator.validateProcessReport,
   reportController.processReport
 );
