@@ -1,8 +1,9 @@
 import { ArrowRight, Play } from "lucide-react";
-import { GOOGLE_DRIVE_DOWNLOAD_LINK } from "../config/links";
+import { GOOGLE_DRIVE_DOWNLOAD_LINK, WATCH_DEMO_LINK } from "../config/links";
 
 export default function CTABand() {
   const downloadHref = GOOGLE_DRIVE_DOWNLOAD_LINK || "#install";
+  const demoHref = WATCH_DEMO_LINK || "#how-to-use";
 
   return (
     <section className="relative overflow-hidden bg-[#070504] px-6 py-20 sm:py-24 lg:px-8 lg:py-28">
@@ -33,7 +34,7 @@ export default function CTABand() {
             />
           </a>
           <a
-            href="#how-to-use"
+            href={demoHref}
             className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.05] px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:border-white/30 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300"
           >
             <Play className="h-4 w-4 fill-white" aria-hidden="true" />
