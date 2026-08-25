@@ -1,135 +1,72 @@
-import { BadgeCheck, Check, FileText, SearchCheck, ShieldCheck } from "lucide-react";
-import { useRef, useState } from "react";
-import analyzeScreenshot from "../assets/mori-analyze-panel.png";
-import factCheckScreenshot from "../assets/mori-fact-check-panel.png";
-import reportScreenshot from "../assets/mori-report-panel.png";
+import { BadgeCheck, BookOpen, Play } from "lucide-react";
+import { useState } from "react";
 import logo from "../assets/logo.png";
-import { GOOGLE_DRIVE_DOWNLOAD_LINK, WATCH_DEMO_LINK } from "../config/links";
-
-const views = [
-  {
-    id: "analyze",
-    label: "Analyze",
-    title: "Understand the post",
-    description: "Mori extracts the issue, urgency, civic impact, location clues, and the next useful action from the active page.",
-    icon: SearchCheck,
-    image: analyzeScreenshot,
-    alt: "Mori Analyze tab identifying a critical brush fire from a Facebook post",
-  },
-  {
-    id: "verify",
-    label: "Fact check",
-    title: "Check the claim",
-    description: "Review a clear verdict, confidence level, checked claims, and the details that support the result.",
-    icon: ShieldCheck,
-    image: factCheckScreenshot,
-    alt: "Mori Fact Check tab showing a true verdict with 95 percent confidence",
-  },
-  {
-    id: "report",
-    label: "Report",
-    title: "Prepare the handoff",
-    description: "Mori drafts the subject and report body, keeps the source attached, and suggests a destination before anything is sent.",
-    icon: FileText,
-    image: reportScreenshot,
-    alt: "Mori Report tab preparing an agency-ready email about a brush fire",
-  },
-];
+import { GOOGLE_DRIVE_DOWNLOAD_LINK, YOUTUBE_DEMO_EMBED_LINK } from "../config/links";
 
 const installationSteps = [
-  ["Download Mori", "Click Download and save the Mori ZIP file to your computer."],
-  ["Extract the ZIP", "Right-click the downloaded ZIP, choose Extract All, and keep the extracted folder."],
-  ["Open Extensions", "In Chrome, enter chrome://extensions in the address bar and press Enter."],
-  ["Load Mori", "Turn on Developer mode, click Load unpacked, then select the extracted Mori folder."],
-  ["Pin and open", "Open Chrome's Extensions menu, pin Mori, then click its icon to open the side panel."],
+  ["Download Mori", "Save the Mori ZIP."],
+  ["Extract the ZIP", "Keep the extracted folder."],
+  ["Open Extensions", "Go to chrome://extensions."],
+  ["Load Mori", "Enable Developer mode, then Load unpacked."],
+  ["Pin and open", "Pin Mori and open its side panel."],
 ];
 
-function ProductView() {
-  const [activeViewId, setActiveViewId] = useState(views[0].id);
-  const activeView = views.find((view) => view.id === activeViewId) ?? views[0];
-
+function ProductVideo() {
   return (
-    <div>
-      <div className="grid grid-cols-3" aria-label="Mori product views">
-        {views.map((view) => {
-          const Icon = view.icon;
-          const isActive = view.id === activeView.id;
-          return (
-            <button
-              key={view.id}
-              type="button"
-              onClick={() => setActiveViewId(view.id)}
-              aria-pressed={isActive}
-              className={`flex min-h-12 items-center justify-center gap-2 border-t text-[10px] font-bold uppercase tracking-[0.08em] transition-colors sm:text-xs sm:tracking-[0.1em] ${
-                isActive ? "-mt-px border-signal text-signal" : "border-transparent text-muted hover:text-ink"
-              }`}
-            >
-              <Icon className="h-4 w-4" aria-hidden="true" />
-              <span>{view.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      <article className="grid overflow-hidden rounded-2xl border border-line bg-[#eee8dc] lg:grid-cols-[1.4fr_0.6fr]">
-        <img
-          key={activeView.id}
-          src={activeView.image}
-          alt={activeView.alt}
-          className="product-image aspect-[16/10] h-full w-full border-b border-line object-cover object-top lg:border-b-0 lg:border-r"
-          width="1280"
-          height="800"
-        />
-        <div className="flex min-h-[260px] flex-col justify-between p-6 sm:p-8">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-signal">{activeView.label}</p>
-            <h2 className="mt-3 text-2xl font-extrabold tracking-[-0.035em]">{activeView.title}</h2>
-            <p className="mt-4 text-sm leading-7 text-body sm:text-base">{activeView.description}</p>
-          </div>
-          <p className="mt-8 border-t border-[#d2c8b8] pt-4 text-xs font-semibold text-muted">Real Mori interface · Select a tab to preview</p>
-        </div>
-      </article>
+    <div className="w-full max-w-[640px] overflow-hidden rounded-2xl border border-line bg-night shadow-product">
+      <iframe
+        className="aspect-video w-full"
+        src={YOUTUBE_DEMO_EMBED_LINK}
+        title="Mori Chrome extension walkthrough"
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      />
     </div>
   );
 }
 
-function HowToUse() {
+function HowToUse({ isActive }) {
   return (
-    <div className="pt-8">
-      <article className="overflow-hidden rounded-2xl border border-line bg-white">
-        <header className="border-b border-line px-5 py-5 sm:px-7">
-          <p className="text-xs font-bold uppercase tracking-[0.12em] text-signal">Chrome installation</p>
-          <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.035em]">Add Mori to Chrome</h2>
-          <p className="mt-2 text-sm leading-6 text-body">Install the current early-access build manually in five steps.</p>
-        </header>
-        <ol>
-          {installationSteps.map(([title, description], index) => (
-            <li key={title} className="flex gap-4 border-b border-line px-5 py-5 last:border-b-0 sm:items-center sm:px-7">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#fbe9e9] text-sm font-extrabold text-signal">{index + 1}</span>
-              <div className="min-w-0 flex-1 sm:grid sm:grid-cols-[130px_1fr] sm:items-center sm:gap-5">
-                <h3 className="font-extrabold">{title}</h3>
-                <p className="mt-1 text-sm leading-6 text-body sm:mt-0">{description}</p>
-              </div>
-              <Check className="hidden h-5 w-5 text-signal sm:block" aria-hidden="true" />
-            </li>
-          ))}
-        </ol>
-      </article>
-    </div>
+    <article className="w-full max-w-[800px] overflow-hidden rounded-2xl border border-line bg-white shadow-product">
+      <header className="flex flex-wrap items-end justify-between gap-2 border-b border-line px-4 py-3 sm:px-5">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-signal">Chrome installation</p>
+          <h2 className="mt-1 text-lg font-extrabold tracking-[-0.03em]">Add Mori to Chrome</h2>
+        </div>
+        <p className="text-xs text-body">Five quick steps · Early access</p>
+      </header>
+      <ol className="grid grid-cols-2 gap-px bg-line md:grid-cols-5">
+        {installationSteps.map(([title, description], index) => (
+          <li
+            key={title}
+            className={`flex min-h-[88px] gap-3 bg-white p-3 transition-[opacity,transform] duration-200 ease-out md:min-h-[118px] md:flex-col md:gap-2 md:p-4 ${
+              isActive ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+            }`}
+            style={{ transitionDelay: isActive ? `${80 + index * 35}ms` : "0ms" }}
+          >
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#fbe9e9] text-xs font-extrabold text-signal">{index + 1}</span>
+            <div className="min-w-0">
+              <h3 className="text-xs font-extrabold leading-4 sm:text-sm">{title}</h3>
+              <p className="mt-1 text-[11px] leading-4 text-body">{description}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </article>
   );
 }
 
 export default function HowItWorks() {
   const [showGuide, setShowGuide] = useState(false);
-  const contentRef = useRef(null);
 
   const toggleGuide = () => {
     setShowGuide((current) => !current);
-    requestAnimationFrame(() => contentRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
   };
 
   return (
-    <section className="min-h-screen bg-white px-4 py-10 sm:px-6 sm:py-16">
+    <section className="w-full bg-white px-4 py-5 sm:px-6 sm:py-6">
       <div className="mx-auto max-w-[980px]">
         <header className="grid gap-7 sm:grid-cols-[170px_1fr] sm:items-center sm:gap-10">
           <div className="mx-auto grid h-32 w-32 place-items-center rounded-full border-2 border-signal p-1 sm:h-36 sm:w-36">
@@ -143,9 +80,17 @@ export default function HowItWorks() {
               <h1 className="text-2xl font-normal tracking-[-0.03em] sm:text-3xl">mori.extension</h1>
               <BadgeCheck className="h-5 w-5 fill-signal text-white" aria-label="Mori profile" />
               <a href={GOOGLE_DRIVE_DOWNLOAD_LINK} className="rounded-lg bg-signal px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-signal-dark">Download</a>
-              <a href={WATCH_DEMO_LINK} className="rounded-lg bg-[#efefef] px-4 py-2 text-sm font-bold transition-colors hover:bg-line">Demo</a>
-              <button type="button" onClick={toggleGuide} aria-pressed={showGuide} className="rounded-lg bg-[#efefef] px-4 py-2 text-sm font-bold transition-colors hover:bg-line">
-                {showGuide ? "View product" : "How to use"}
+              <button
+                type="button"
+                onClick={toggleGuide}
+                aria-pressed={showGuide}
+                aria-controls="product-stage"
+                className="inline-flex min-h-10 min-w-[118px] items-center justify-center rounded-lg bg-[#efefef] px-4 text-sm font-bold transition-[background-color,transform] duration-200 hover:bg-line active:scale-[0.98]"
+              >
+                <span key={showGuide ? "product" : "guide"} className="button-label-enter inline-flex items-center gap-2">
+                  {showGuide ? <Play className="h-3.5 w-3.5 fill-current" aria-hidden="true" /> : <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />}
+                  {showGuide ? "View product" : "How to use"}
+                </span>
               </button>
             </div>
 
@@ -161,8 +106,26 @@ export default function HowItWorks() {
           </div>
         </header>
 
-        <div ref={contentRef} className="mt-12 scroll-mt-8 border-t border-line">
-          {showGuide ? <HowToUse /> : <ProductView />}
+        <div id="product-stage" className="relative mt-6 h-[330px] border-t border-line sm:mt-8 sm:h-[384px]" aria-live="polite">
+          <div
+            aria-hidden={showGuide}
+            inert={showGuide}
+            className={`absolute inset-x-0 top-5 flex h-[300px] items-center justify-center transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-6 sm:h-[360px] ${
+              showGuide ? "pointer-events-none -translate-y-2 scale-[0.985] opacity-0" : "translate-y-0 scale-100 opacity-100"
+            }`}
+          >
+            <ProductVideo />
+          </div>
+
+          <div
+            aria-hidden={!showGuide}
+            inert={!showGuide}
+            className={`absolute inset-x-0 top-5 flex h-[300px] items-center justify-center transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:top-6 sm:h-[360px] ${
+              showGuide ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-2 scale-[0.985] opacity-0"
+            }`}
+          >
+            <HowToUse isActive={showGuide} />
+          </div>
         </div>
       </div>
     </section>

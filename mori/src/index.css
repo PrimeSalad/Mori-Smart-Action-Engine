@@ -109,6 +109,11 @@ img {
   75% { transform: translateX(4px); }
 }
 
+@keyframes buttonLabelIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .modal-enter { animation: modalIn 180ms ease-out forwards; }
 .overlay-enter { animation: overlayIn 160ms ease-out forwards; }
 .spinner { animation: spin 1s linear infinite; }
@@ -118,6 +123,7 @@ img {
 .progress-fill { animation: progressFill 2.5s ease-out forwards; }
 .fade-in-up { animation: fadeInUp 220ms ease-out forwards; }
 .shake { animation: shake 320ms ease-in-out; }
+.button-label-enter { animation: buttonLabelIn 180ms ease-out both; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -126,5 +132,6 @@ img {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }

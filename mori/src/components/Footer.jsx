@@ -1,37 +1,27 @@
-import logo from "../assets/logo.png";
-
-const footerLinks = [
-  { label: "Product", href: "#product" },
-  { label: "How it works", href: "#how-to-use" },
-  { label: "Install", href: "#install" },
-  { label: "Support", href: "#support" },
-];
+import { ArrowUpRight } from "lucide-react";
+import { GOOGLE_DRIVE_DOWNLOAD_LINK } from "../config/links";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-paper/20 bg-night px-5 py-9 text-paper sm:px-8">
-      <div className="mx-auto grid max-w-[1240px] gap-8 sm:grid-cols-[1fr_auto] sm:items-end lg:grid-cols-[1fr_auto_1fr]">
-        <a href="#home" className="flex min-h-11 items-center gap-3" aria-label="Back to Mori home">
-          <span className="grid h-10 w-10 place-items-center bg-signal">
-            <img src={logo} alt="" className="h-8 w-8 object-contain" />
-          </span>
-          <span>
-            <span className="block text-sm font-extrabold uppercase tracking-[0.16em]">Mori</span>
-            <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-paper/55">Smart Action Engine</span>
-          </span>
-        </a>
+    <footer className="shrink-0 border-t border-line bg-paper-deep px-4 sm:px-6">
+      <div className="mx-auto flex min-h-12 max-w-[980px] items-center justify-between gap-4 text-[11px] text-muted">
+        <p>© 2026 Mori</p>
+        <p className="hidden sm:block">Chrome extension · Early access</p>
 
-        <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-6 gap-y-3 sm:justify-end lg:justify-center">
-          {footerLinks.map((link) => (
-            <a key={link.href} href={link.href} className="flex min-h-11 items-center text-sm font-semibold text-paper/60 transition-colors hover:text-white">
-              {link.label}
+        <nav aria-label="Footer navigation" className="flex items-center gap-4 font-semibold">
+            <a
+              href="https://github.com/PrimeSalad/Mori-Smart-Action-Engine"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex min-h-11 items-center gap-1 text-muted transition-colors hover:text-ink"
+            >
+              GitHub
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
             </a>
-          ))}
+            <a href={GOOGLE_DRIVE_DOWNLOAD_LINK} className="inline-flex min-h-11 items-center text-muted transition-colors hover:text-ink">
+              Download
+            </a>
         </nav>
-
-        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-paper/45 sm:col-span-2 lg:col-span-1 lg:text-right">
-          © 2026 Mori · Built for civic action
-        </p>
       </div>
     </footer>
   );
