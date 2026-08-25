@@ -1,84 +1,75 @@
-import {
-  BrainCircuit,
-  Building2,
-  Download,
-  FileStack,
-  ShieldQuestion,
-} from "lucide-react";
+import { Building2, FileOutput, Gauge, Link2, ShieldCheck } from "lucide-react";
 
-const features = [
+const capabilities = [
   {
-    icon: BrainCircuit,
-    title: "Intelligent Post Analysis",
-    description:
-      "Automatically extract the core facts from any social media post or news article. Mori identifies the issue category, urgency level, and recommended course of action in seconds.",
+    icon: Link2,
+    title: "Keep the source",
+    description: "The post text and page link stay attached to the report.",
+    className: "bg-signal text-white",
   },
   {
-    icon: ShieldQuestion,
-    title: "Mori Search Fact-Checking",
-    description:
-      "Verify suspicious claims with a deep-search engine that identifies credible sources and provides a transparency verdict, helping you fight misinformation before it spreads.",
+    icon: Gauge,
+    title: "Read urgency",
+    description: "See issue type, urgency, readiness, and civic impact at a glance.",
+    className: "bg-[#f2f2f2] text-ink",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Show confidence",
+    description: "Review the verdict, confidence level, and checked claims.",
+    className: "bg-night text-white",
   },
   {
     icon: Building2,
-    title: "Automated Agency Routing",
-    description:
-      "No more guessing where to send a report. Mori intelligently maps identified issues to the correct government agencies and organizations, providing official email addresses and escalation paths.",
+    title: "Find the right route",
+    description: "Match the issue to a relevant public agency before sending.",
+    className: "bg-[#f7e7e7] text-ink",
   },
   {
-    icon: FileStack,
-    title: "Professional Report Builder",
-    description:
-      "Transform social media evidence into formal, actionable reports. Mori generates structured drafts, manages screenshot evidence with cryptographic hashing for integrity, and provides real-time email previews.",
-  },
-  {
-    icon: Download,
-    title: "Enterprise-Grade Export",
-    description:
-      "Secure your documentation by downloading reports as professionally formatted PDFs or editable Word documents, ready for official submission or legal filing.",
+    icon: FileOutput,
+    title: "Take the report with you",
+    description: "Create an email draft or export to PDF and editable Word.",
+    className: "bg-[#eeeeee] text-ink",
   },
 ];
 
 export default function Features() {
   return (
-    <section
-      id="features"
-      className="bg-[#0d0807] px-6 py-20 sm:py-24 lg:px-8 lg:py-28"
-    >
-      <div className="mx-auto max-w-[1200px]">
-        <div className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ff8a3d]">
-            Key features
-          </p>
-          <h2 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl">
-            Built for verified civic action, not passive scrolling.
-          </h2>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-stone-300/80 sm:text-lg">
-            Five focused capabilities that turn signals from your feed into
-            evidence-backed reports — all without leaving your browser.
+    <section id="features" className="border-y border-line bg-paper-deep px-4 py-20 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-[1060px]">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-signal">What stays connected</p>
+            <h2 className="text-balance mt-3 max-w-2xl text-4xl font-extrabold leading-[1.05] tracking-[-0.05em] sm:text-5xl">
+              More than another summary.
+            </h2>
+          </div>
+          <p className="max-w-sm text-sm leading-6 text-body sm:text-base">
+            The claim, evidence, decision, and handoff stay together until you are ready to act.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 lg:mt-14 lg:grid-cols-6">
-          {features.map((feature, index) => (
-            <article
-              key={feature.title}
-              className={`group rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-6 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.6)] transition duration-200 hover:-translate-y-1 hover:border-orange-200/30 sm:p-7 ${
-                index < 3 ? "lg:col-span-2" : "lg:col-span-3"
-              }`}
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff9b3d] text-white shadow-[0_0_36px_-8px_rgba(255,77,37,0.45)]">
-                <feature.icon className="h-6 w-6" aria-hidden="true" />
-              </div>
-              <h3 className="mt-6 text-lg font-semibold leading-snug text-white sm:text-xl">
-                {feature.title}
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-stone-300/75 sm:text-base">
-                {feature.description}
-              </p>
-            </article>
-          ))}
-        </div>
+        <ol className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-6">
+          {capabilities.map((capability, index) => {
+            const Icon = capability.icon;
+            const spanClass = index < 2 ? "sm:col-span-3" : "sm:col-span-2";
+            return (
+              <li
+                key={capability.title}
+                className={`flex min-h-[230px] flex-col justify-between rounded-2xl p-5 sm:min-h-[250px] sm:p-6 ${spanClass} ${capability.className}`}
+              >
+                <div className="flex items-center justify-between">
+                  <Icon className="h-7 w-7" aria-hidden="true" />
+                  <span className="font-mono text-xs opacity-60">0{index + 1}</span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-extrabold leading-tight tracking-[-0.025em] sm:text-2xl">{capability.title}</h3>
+                  <p className="mt-3 text-sm leading-6 opacity-75">{capability.description}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </section>
   );

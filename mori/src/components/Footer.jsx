@@ -1,50 +1,36 @@
 import logo from "../assets/logo.png";
 
 const footerLinks = [
-  { label: "Home", href: "#home" },
-  { label: "How to Use", href: "#how-to-use" },
-  { label: "About", href: "#about" },
+  { label: "Product", href: "#product" },
+  { label: "How it works", href: "#how-to-use" },
+  { label: "Install", href: "#install" },
   { label: "Support", href: "#support" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#070504] px-6 py-12 lg:px-8">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-6 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
-        <a
-          href="#home"
-          className="flex items-center justify-center gap-3 sm:justify-start"
-        >
-          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff8a3d]">
-            <img src={logo} alt="" className="h-7 w-7 object-contain" />
+    <footer className="border-t border-paper/20 bg-night px-5 py-9 text-paper sm:px-8">
+      <div className="mx-auto grid max-w-[1240px] gap-8 sm:grid-cols-[1fr_auto] sm:items-end lg:grid-cols-[1fr_auto_1fr]">
+        <a href="#home" className="flex min-h-11 items-center gap-3" aria-label="Back to Mori home">
+          <span className="grid h-10 w-10 place-items-center bg-signal">
+            <img src={logo} alt="" className="h-8 w-8 object-contain" />
           </span>
-          <span className="leading-none">
-            <span className="block text-sm font-bold uppercase tracking-[0.22em] text-white">
-              MORI
-            </span>
-            <span className="mt-1 block text-xs font-medium text-stone-400">
-              Smart Action Engine
-            </span>
+          <span>
+            <span className="block text-sm font-extrabold uppercase tracking-[0.16em]">Mori</span>
+            <span className="block text-[10px] font-semibold uppercase tracking-[0.12em] text-paper/55">Smart Action Engine</span>
           </span>
         </a>
 
-        <nav
-          aria-label="Footer navigation"
-          className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
-        >
+        <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-6 gap-y-3 sm:justify-end lg:justify-center">
           {footerLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-stone-400 transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300"
-            >
+            <a key={link.href} href={link.href} className="flex min-h-11 items-center text-sm font-semibold text-paper/60 transition-colors hover:text-white">
               {link.label}
             </a>
           ))}
         </nav>
 
-        <p className="text-sm text-stone-500">
-          © 2026 Mori · Scan. Verify. Report.
+        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-paper/45 sm:col-span-2 lg:col-span-1 lg:text-right">
+          © 2026 Mori · Built for civic action
         </p>
       </div>
     </footer>

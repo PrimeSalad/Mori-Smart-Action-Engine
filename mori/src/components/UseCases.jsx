@@ -1,126 +1,57 @@
-import {
-  ArrowRight,
-  BadgeCheck,
-  DownloadCloud,
-  FileCheck2,
-  FolderOpen,
-  Globe,
-  MapPinned,
-  Pin,
-  Radar,
-  SearchCheck,
-  ShieldAlert,
-} from "lucide-react";
+import { ArrowDownToLine, ArrowUpRight, Check, CircleHelp, Play } from "lucide-react";
+import { GOOGLE_DRIVE_DOWNLOAD_LINK, WATCH_DEMO_LINK } from "../config/links";
 
-const benefits = [
-  {
-    icon: ShieldAlert,
-    title: "Detect urgent civic issues faster",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Verify claims before they spread",
-  },
-  {
-    icon: MapPinned,
-    title: "Route reports to the right agency",
-  },
+const workflow = [
+  ["Capture", "Open a post or article and pull in its text and source link."],
+  ["Analyze", "Review the issue, urgency, public impact, and next action."],
+  ["Verify", "Inspect the checked claim, verdict, and confidence level."],
+  ["Review", "Edit the draft, add evidence, and confirm the destination."],
+  ["Export", "Create an email or keep a PDF or editable Word copy."],
 ];
 
 const installSteps = [
   {
-    icon: DownloadCloud,
-    title: "Step 1 — Download the extension",
-    items: [
-      "Click the download link.",
-      "Download mori-extension.zip.",
-      "Extract the ZIP file to a folder on your computer.",
-    ],
+    title: "Download and extract",
+    items: ["Download the Mori ZIP from Google Drive.", "Extract it to a folder you will keep."],
   },
   {
-    icon: Globe,
-    title: "Step 2 — Install in Chrome",
-    items: [
-      "Open Chrome and go to chrome://extensions/.",
-      "Turn on Developer mode.",
-      "Click Load unpacked.",
-      "Select the extracted Mori folder.",
-    ],
+    title: "Load it in Chrome",
+    items: ["Open chrome://extensions.", "Turn on Developer mode and choose Load unpacked."],
   },
   {
-    icon: Pin,
-    title: "Step 3 — Pin & open",
-    items: [
-      "Click the Extensions icon next to the address bar.",
-      "Find Mori and click the Pin icon.",
-      "Click the Mori icon to open the Smart Side Panel.",
-    ],
+    title: "Pin and open",
+    items: ["Select the extracted Mori folder.", "Pin Mori and open the side panel."],
   },
 ];
 
-const workflowSteps = [
-  {
-    title: "Capture & intake",
-    description:
-      "Navigate to any social media post, news article, or online content. Click Capture Page in the Mori side panel to pull the text and link, or paste content manually.",
-  },
-  {
-    title: "Analyze with AI",
-    description:
-      "Click Analyze with Mori. Mori identifies the civic issue, urgency level, recommended action, and relevant agency.",
-  },
-  {
-    title: "Fact-check",
-    description:
-      "Use Mori Search Fact-Checking to search credible sources and generate a transparency verdict.",
-  },
-  {
-    title: "Build your report",
-    description:
-      "Switch to the Report tab. Mori pre-fills the title, description, location, and supporting details. Add reporter details, attach screenshot evidence, and review the live email preview.",
-  },
-  {
-    title: "Take action",
-    description:
-      "Create an email draft, download a PDF, or export an editable Word document.",
-  },
-];
-
-function WhyMori() {
+function Workflow() {
   return (
-    <section className="bg-[#070504] px-6 py-20 sm:py-24 lg:px-8 lg:py-28">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-14">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ff8a3d]">
-              Why Mori
-            </p>
-            <h2 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl">
-              From awareness to accountable action.
-            </h2>
-          </div>
-          <p className="text-base leading-relaxed text-stone-300/80 sm:text-lg">
-            In an era of information overload, Mori empowers citizens to stop
-            being passive observers and start being active participants in their
-            community's safety and integrity.
+    <section id="how-to-use" className="bg-white px-4 py-20 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-[900px]">
+        <div className="text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-signal">How it works</p>
+          <h2 className="text-balance mx-auto mt-3 max-w-2xl text-4xl font-extrabold leading-[1.05] tracking-[-0.05em] sm:text-5xl">
+            Five moves from post to proper report.
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-body">
+            You stay in control at every step. Mori prepares the work; nothing is sent automatically.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-3 lg:mt-14">
-          {benefits.map((benefit) => (
-            <article
-              key={benefit.title}
-              className="rounded-3xl border border-white/10 bg-[#130c0a] p-6 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.6)] sm:p-7"
-            >
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f8efe5] text-[#d92b18]">
-                <benefit.icon className="h-6 w-6" aria-hidden="true" />
+        <ol className="mx-auto mt-12 max-w-[760px] overflow-hidden rounded-2xl border border-line bg-white">
+          {workflow.map(([title, description], index) => (
+            <li key={title} className="flex gap-4 border-b border-line p-5 last:border-b-0 sm:items-center sm:gap-5 sm:px-6 sm:py-5">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#fbe9e9] text-sm font-extrabold text-signal">
+                {index + 1}
               </span>
-              <h3 className="mt-6 text-lg font-semibold leading-snug text-white sm:text-xl">
-                {benefit.title}
-              </h3>
-            </article>
+              <div className="min-w-0 flex-1 sm:grid sm:grid-cols-[150px_1fr] sm:items-center sm:gap-5">
+                <h3 className="text-base font-extrabold sm:text-lg">{title}</h3>
+                <p className="mt-1 text-sm leading-6 text-body sm:mt-0">{description}</p>
+              </div>
+              <Check className="hidden h-5 w-5 shrink-0 text-signal sm:block" aria-hidden="true" />
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );
@@ -128,151 +59,73 @@ function WhyMori() {
 
 function InstallGuide() {
   return (
-    <section
-      id="install"
-      className="relative overflow-hidden bg-[#f7efe5] px-6 py-20 text-[#1e0d08] sm:py-24 lg:px-8 lg:py-28"
-    >
-      <div className="absolute right-0 top-0 -z-0 h-80 w-80 rounded-full bg-[#ff7b2e]/20 blur-3xl" />
-
-      <div className="relative mx-auto max-w-[1200px]">
-        <div className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#c42114]">
-            Installation guide
-          </p>
-          <h2 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl lg:text-5xl">
-            How to install Mori.
-          </h2>
-          <p className="mt-5 text-base leading-relaxed text-[#5f4b40] sm:text-lg">
-            Mori is currently in its deployment phase and can be installed as a
-            developer extension from Google Drive.
-          </p>
+    <section id="install" className="border-y border-line bg-paper-deep px-4 py-20 sm:px-6 sm:py-24">
+      <div className="mx-auto max-w-[1060px]">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-signal">Early-access install</p>
+            <h2 className="text-balance mt-3 max-w-2xl text-4xl font-extrabold leading-[1.05] tracking-[-0.05em] sm:text-5xl">
+              Set up Mori in three steps.
+            </h2>
+          </div>
+          <a
+            href={GOOGLE_DRIVE_DOWNLOAD_LINK}
+            className="inline-flex min-h-12 w-fit items-center justify-center gap-2 rounded-lg bg-signal px-6 text-sm font-bold text-white transition-colors hover:bg-signal-dark"
+          >
+            <ArrowDownToLine className="h-4 w-4" aria-hidden="true" />
+            Download ZIP
+          </a>
         </div>
 
-        <div className="mt-12 grid gap-4 sm:gap-5 lg:mt-14 lg:grid-cols-3">
-          {installSteps.map((step) => (
-            <article
-              key={step.title}
-              className="rounded-3xl border border-[#eadccc] bg-white p-6 shadow-[0_18px_50px_-20px_rgba(92,38,14,0.18)] sm:p-7"
-            >
-              <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff8a3d] text-white">
-                <step.icon className="h-6 w-6" aria-hidden="true" />
-              </span>
-              <h3 className="mt-6 text-lg font-semibold leading-snug sm:text-xl">
-                {step.title}
-              </h3>
-              <ul className="mt-5 space-y-2.5">
+        <ol className="mt-10 grid gap-4 md:grid-cols-3">
+          {installSteps.map((step, index) => (
+            <li key={step.title} className="rounded-2xl border border-line bg-white p-6">
+              <div className="flex items-center gap-3">
+                <span className="grid h-10 w-10 place-items-center rounded-full bg-signal text-sm font-extrabold text-white">{index + 1}</span>
+                <h3 className="text-lg font-extrabold tracking-[-0.02em]">{step.title}</h3>
+              </div>
+              <ul className="mt-6 space-y-3">
                 {step.items.map((item) => (
-                  <li
-                    key={item}
-                    className="flex gap-3 text-sm leading-6 text-[#5f4b40]"
-                  >
-                    <ArrowRight
-                      className="mt-1 h-4 w-4 shrink-0 text-[#d92b18]"
-                      aria-hidden="true"
-                    />
+                  <li key={item} className="flex gap-3 text-sm leading-6 text-body">
+                    <Check className="mt-1 h-4 w-4 shrink-0 text-signal" aria-hidden="true" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
-            </article>
+            </li>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Workflow() {
-  return (
-    <section
-      id="how-to-use"
-      className="bg-[#0d0807] px-6 py-16 sm:py-20 lg:px-8 lg:py-24"
-    >
-      <div className="mx-auto max-w-[1200px]">
-        <div className="grid gap-8 lg:grid-cols-[1fr_0.82fr] lg:items-end lg:gap-12">
-          <div className="max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#ff8a3d]">
-              The Mori workflow
-            </p>
-            <h2 className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight text-white sm:text-4xl lg:text-5xl">
-              From captured evidence to official action.
-            </h2>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-stone-300/80 sm:text-lg">
-              A side-panel flow that keeps text, links, screenshots, and report
-              drafts connected from the moment you capture them.
-            </p>
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_60px_-36px_rgba(0,0,0,0.65)]">
-            <div className="flex items-center gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff3126] to-[#ff8a3d]">
-                <FolderOpen className="h-5 w-5 text-white" aria-hidden="true" />
-              </span>
-              <div className="leading-tight">
-                <p className="text-sm font-semibold text-white">
-                  Evidence-ready
-                </p>
-                <p className="mt-1 text-sm leading-6 text-stone-400">
-                  Text, links, screenshots, and drafts stay connected.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <ol className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-          {workflowSteps.map((step, index) => {
-            const spanClass = index < 2 ? "lg:col-span-3" : "lg:col-span-2";
-
-            return (
-              <li
-                key={step.title}
-                className={`rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.07] to-white/[0.025] p-5 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.6)] sm:p-6 ${spanClass}`}
-              >
-                <div className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#f8efe5] text-base font-bold text-[#d92b18]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="text-lg font-semibold leading-snug text-white">
-                    {step.title}
-                  </h3>
-                </div>
-                <p className="mt-4 text-sm leading-6 text-stone-300/75">
-                  {step.description}
-                </p>
-              </li>
-            );
-          })}
         </ol>
+        <p className="mt-5 text-sm text-muted">Chrome will label this as an unpacked extension while Mori is in deployment.</p>
       </div>
     </section>
   );
 }
 
-function SupportStrip() {
-  const items = [
-    ["Analyze", "Extract issue, urgency, impact, and action.", Radar],
-    ["Fact Check", "Verify public claims with transparency scoring.", SearchCheck],
-    ["Report", "Build evidence-backed drafts and exports.", FileCheck2],
-  ];
-
+function Support() {
   return (
-    <section id="support" className="bg-[#070504] px-6 pb-4 lg:px-8">
-      <div className="mx-auto max-w-[1200px] rounded-3xl border border-orange-200/15 bg-gradient-to-r from-[#180b09] to-[#25100b] p-6 shadow-[0_24px_70px_-40px_rgba(0,0,0,0.6)] sm:p-8">
-        <div className="grid gap-6 md:grid-cols-3">
-          {items.map(([title, text, Icon]) => (
-            <div key={title} className="flex items-start gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white text-[#d92b18]">
-                <Icon className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <div className="leading-tight">
-                <h3 className="text-base font-semibold text-white">{title}</h3>
-                <p className="mt-1.5 text-sm leading-6 text-stone-300/75">
-                  {text}
-                </p>
-              </div>
-            </div>
-          ))}
+    <section id="support" className="bg-white px-4 py-16 sm:px-6 sm:py-20">
+      <div className="mx-auto flex max-w-[900px] flex-col items-center rounded-2xl border border-line bg-paper-deep px-6 py-10 text-center sm:px-10">
+        <span className="grid h-14 w-14 place-items-center rounded-full bg-[#fbe9e9] text-signal">
+          <CircleHelp className="h-7 w-7" aria-hidden="true" />
+        </span>
+        <h2 className="mt-5 text-3xl font-extrabold tracking-[-0.04em]">Need help with setup?</h2>
+        <p className="mt-3 max-w-xl text-base leading-7 text-body">
+          The walkthrough covers the full install, from extracting the ZIP to opening the Mori side panel.
+        </p>
+        <div className="mt-6 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
+          <a href={WATCH_DEMO_LINK} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-signal px-5 text-sm font-bold text-white transition-colors hover:bg-signal-dark">
+            <Play className="h-4 w-4 fill-current" aria-hidden="true" />
+            Watch setup demo
+          </a>
+          <a
+            href="https://github.com/PrimeSalad/Mori-Smart-Action-Engine"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-line bg-white px-5 text-sm font-bold transition-colors hover:bg-[#f2f2f2]"
+          >
+            View GitHub
+            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </a>
         </div>
       </div>
     </section>
@@ -282,10 +135,9 @@ function SupportStrip() {
 export default function UseCases() {
   return (
     <>
-      <WhyMori />
-      <InstallGuide />
       <Workflow />
-      <SupportStrip />
+      <InstallGuide />
+      <Support />
     </>
   );
 }
