@@ -94,12 +94,7 @@ export default function HowItWorks() {
               </button>
             </div>
 
-            <dl className="mt-5 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-              <div><dt className="inline font-bold">3</dt> <dd className="inline">tools</dd></div>
-              <div><dt className="inline font-bold">1</dt> <dd className="inline">side panel</dd></div>
-              <div><dt className="inline font-bold">0</dt> <dd className="inline">context switches</dd></div>
-            </dl>
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-body sm:text-base">
+            <p className="mt-5 max-w-2xl text-sm leading-6 text-body sm:text-base">
               <strong className="block text-ink">Mori · Smart Action Engine</strong>
               Analyze, verify, and report what you see online while the original page stays open.
             </p>
